@@ -4,12 +4,14 @@ import { MdDelete } from 'react-icons/md';
 import useProducts from '../../hooks/useProducts';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const MyCart = () => {
     const [myCarts, refetch] = useMyCarts()
     const [products] = useProducts()
     const totalItem = myCarts.reduce((p, q) => p + q.productQuantity, 0)
     const totalPrice = myCarts.reduce((p, q) => p + q.productPrice, 0)
+    const navigate = useNavigate()
 
     const handelDeleteBtn = async (id, productId) => {
         // console.log(id, productId);
@@ -53,12 +55,20 @@ const MyCart = () => {
             }
         });
     }
+    const handelPayBtn = () => {
+        if (totalPrice > 0) {
+            navigate('/payment/shopping')
+        }
+        else{
+            console.log('object');
+        }
+    }
     return (
         <div className="overflow-x-auto px-5 mt-8">
             <div className='flex justify-around'>
                 <h3 className='text-3xl font-semibold'>Total Item: {totalItem}</h3>
                 <h3 className='text-3xl font-semibold'>Total Price: ${totalPrice.toFixed(2)}</h3>
-                <button className='btn btn-accent'>Pay Now</button>
+                <button onClick={handelPayBtn} className='btn btn-accent'>Pay Now</button>
             </div>
             <table className="table mt-5">
                 {/* head */}

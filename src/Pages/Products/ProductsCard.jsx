@@ -4,10 +4,12 @@ import useProducts from '../../hooks/useProducts';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
 import useMyCarts from '../../hooks/useMyCarts';
+import useAuth from '../../hooks/useAuth';
 
 const ProductsCard = ({ product }) => {
     // console.log(product);
     const [myCarts, refetch] = useMyCarts()
+    const { user } = useAuth()
     const axiosPublic = useAxiosPublic()
     const [products] = useProducts()
     const { productRating, productAddingTime, _id, productPrice, brandName, productName, productImg, productDescription, productCategory } = product
@@ -22,7 +24,8 @@ const ProductsCard = ({ product }) => {
             productImg,
             productPrice,
             productId: id,
-            productQuantity: 1
+            productQuantity: 1,
+            myEmail: user?.email
         }
         // console.log(findM);
         if (!findM) {
