@@ -10,7 +10,7 @@ const usePayHis = () => {
     const { data: payHis = [], refetch } = useQuery({
         queryKey: ['payment-his'],
         queryFn: async () => {
-            const pay = await axiosPublic.get(`/payment-his?email=${user?.email}`)
+            const pay = await axiosPublic.get(`/payment-his`)
             return pay.data;
         }
     })

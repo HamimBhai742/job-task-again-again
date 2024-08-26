@@ -4,7 +4,7 @@ import { MdDelete } from 'react-icons/md';
 import useProducts from '../../hooks/useProducts';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const MyCart = () => {
     const [myCarts, refetch] = useMyCarts()
@@ -59,47 +59,53 @@ const MyCart = () => {
         if (totalPrice > 0) {
             navigate('/payment/shopping')
         }
-        else{
+        else {
             console.log('object');
         }
     }
     return (
         <div className="overflow-x-auto px-5 mt-8">
-            <div className='flex justify-around'>
-                <h3 className='text-3xl font-semibold'>Total Item: {totalItem}</h3>
-                <h3 className='text-3xl font-semibold'>Total Price: ${totalPrice.toFixed(2)}</h3>
-                <button onClick={handelPayBtn} className='btn btn-accent'>Pay Now</button>
-            </div>
-            <table className="table mt-5">
-                {/* head */}
-                <thead>
-                    <tr>
-                        <th>Sl. No.</th>
-                        <th>Products Name</th>
-                        <th>Products Iage</th>
-                        <th>Products Price</th>
-                        <th>Products Quantity</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {/* row 1 */}
-                    {
-                        myCarts.map((myCart, idx) => <tr>
-                            <th>{idx + 1}</th>
-                            <td>{myCart?.productName}</td>
-                            <td>
-                                <img src={myCart?.productImg} className='w-24 h-20 rounded-lg' alt="" />
-                            </td>
-                            <td>${myCart?.productPrice.toFixed(2)}</td>
-                            <td>Qty: 0{myCart?.productQuantity}</td>
-                            <td>
-                                <button onClick={() => handelDeleteBtn(myCart?._id, myCart?.productId)} className='text-2xl'><MdDelete></MdDelete></button>
-                            </td>
-                        </tr>)
-                    }
-                </tbody>
-            </table>
+            {myCarts.length > 0 ? <>
+                <div className='flex justify-around'>
+                    <h3 className='text-3xl font-semibold'>Total Item: {totalItem}</h3>
+                    <h3 className='text-3xl font-semibold'>Total Price: ${totalPrice.toFixed(2)}</h3>
+                    <button onClick={handelPayBtn} className='btn btn-accent'>Pay Now</button>
+                </div>
+                <table className="table mt-5">
+                    {/* head */}
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th>Products Name</th>
+                            <th>Products Iage</th>
+                            <th>Products Price</th>
+                            <th>Products Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* row 1 */}
+                        {
+                            myCarts.map((myCart, idx) => <tr>
+                                <th>{idx + 1}</th>
+                                <td>{myCart?.productName}</td>
+                                <td>
+                                    <img src={myCart?.productImg} className='w-24 h-20 rounded-lg' alt="" />
+                                </td>
+                                <td>${myCart?.productPrice.toFixed(2)}</td>
+                                <td>Qty: 0{myCart?.productQuantity}</td>
+                                <td>
+                                    <button onClick={() => handelDeleteBtn(myCart?._id, myCart?.productId)} className='text-2xl'><MdDelete></MdDelete></button>
+                                </td>
+                            </tr>)
+                        }
+                    </tbody>
+                </table> </> : <>
+                <div className='flex justify-center min-h-screen items-center flex-col gap-3'>
+                    <h3 className='text-gray-500'>There are no items in this cart</h3>
+                    <Link to='/product' className='text-orange-500 border-orange-600 border hover:bg-orange-50 px-3 py-2'>CONTINUE SHOPPING</Link>
+                </div>
+            </>}
         </div>
     );
 };

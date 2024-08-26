@@ -4,10 +4,12 @@ import useAxiosPublic from '../../hooks/useAxiosPublic';
 import ProductsCard from './ProductsCard';
 import useProductCount from '../../hooks/useProductCount';
 import { MdOutlineMenuOpen } from 'react-icons/md';
+import useUser from '../../hooks/useUser';
 
 const Products = () => {
-    const hh=new Date()
-    console.log(hh);
+    // const hh=new Date()
+    // console.log(hh);
+    const [userDB] = useUser()
     const axiosPublic = useAxiosPublic()
     const productsCount = useProductCount()
     const [counts, setCounts] = useState(productsCount)
@@ -16,6 +18,9 @@ const Products = () => {
     const [open, setOpen] = useState(false)
     const [itemPerPage, setItemPerPage] = useState(12)
     const [currentPage, setCurrentPage] = useState(0)
+
+
+    console.log(userDB);
 
     const handelOpenBtn = () => {
         setOpen(!open)
@@ -83,7 +88,7 @@ const Products = () => {
         fetchDatas()
     }, [currentPage, itemPerPage, selectedValue])
 
-    const brand = ['Breville', 'Ninja Kitchen', 'Vita-Mix Corporation', 'Unilever', 'CeraVe', 'Adidas', 'Nike', 'Sony', 'Apple', 'Samsung','Pilot','Moleskine','La Mer']
+    const brand = ['Breville', 'Ninja Kitchen', 'Vita-Mix Corporation', 'Unilever', 'CeraVe', 'Adidas', 'Nike', 'Sony', 'Apple', 'Samsung', 'Pilot', 'Moleskine', 'La Mer']
     const category = ['Electronics', 'Fashion', 'Home and Kitchen', 'Health and Beauty', 'Books and Stationery']
     return (
         <div className='lg:mx-10 md:mx-5 mx-3'>
@@ -100,7 +105,7 @@ const Products = () => {
                 </div>
 
                 <div className='my-7'>
-                    <select  onChange={handelSort} className="select select-bordered w-full max-w-xs">
+                    <select onChange={handelSort} className="select select-bordered w-full max-w-xs">
                         <option disabled selected>Sort By</option>
                         <option value={'desc'}>High to Low</option>
                         <option value={'asc'}>Low to High</option>

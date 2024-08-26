@@ -6,10 +6,12 @@ import img from '/images.jpg'
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const API_KEY = import.meta.env.VITE_IMAGE_API_KEY
 const Hosting = `https://api.imgbb.com/1/upload?key=${API_KEY}`
 const Register = () => {
+    const axiosPublic = useAxiosPublic()
     const { registerUser, updateUserProfile, googleLogin } = useAuth()
     const navigate = useNavigate()
     const [showPass, setShowPass] = useState(false)
@@ -28,8 +30,16 @@ const Register = () => {
         const password = data.password
         const name = data.name
         const photo = res.data.data.display_url
+        const userData = {
+            name,
+            email,
+            photo,
+            role: 'user'
+        }
+        console.log(userData);
+        const resUser = await axiosPublic.post('/user', userData)
         registerUser(email, password)
-            .then(userData => {
+            .then(async (userData) => {
                 updateUserProfile(photo, name)
                 console.log(userData.user);
                 if (userData.user) {
@@ -81,7 +91,7 @@ const Register = () => {
                         <label for="password" className="block text-gray-800 font-medium">Password</label>
                     </div>
 
-                    <input  required {...register('password', { pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/ })} type={showPass ? 'text' : 'password'} placeholder='Enter your password' className="block w-full px-4 py-3 mt-2 text-gray-700 bg-white  border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                    <input required {...register('password', { pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/ })} type={showPass ? 'text' : 'password'} placeholder='Enter your password' className="block w-full px-4 py-3 mt-2 text-gray-700 bg-white  border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" />
                     <button className='absolute text-2xl right-3 bottom-3' onClick={handelShowBtn}>{showPass ? <IoMdEyeOff></IoMdEyeOff> : <IoMdEye></IoMdEye>}</button>
                     {
                         errors.password && <p className='text-red-600'>Please provide a strong password</p>

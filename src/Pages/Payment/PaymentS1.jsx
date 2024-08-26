@@ -16,13 +16,14 @@ const PaymentS1 = () => {
     const subTotalPrice = myCarts.reduce((p, q) => p + q.productPrice, 0)
     const [shippingCrarge, setShippingCharge] = useState(0.00)
     const [plcBtn, setPlcBtn] = useState(false)
+
     const handelShippingBtn = (e) => {
         setShipping()
         setShipping(e.target.value);
         if (e.target.value === 'inDhaka') {
             setShippingCharge()
             setShippingCharge(6.99)
-            setSlct(true)
+            setPlcBtn(true)
         }
         else if (e.target.value === 'outDhaka') {
             setShippingCharge()
@@ -30,9 +31,10 @@ const PaymentS1 = () => {
             setPlcBtn(true)
         }
     }
+
     parseFloat(shippingCrarge)
     const totalPrice = parseFloat(subTotalPrice + shippingCrarge)
-    console.log(totalPrice);
+    // console.log(user.photoURL);
 
     const onSubmit = async (data) => {
         console.log(data, totalPrice);
@@ -42,10 +44,12 @@ const PaymentS1 = () => {
             email: user?.email,
             state: data.state,
             billingAddress: data.billingAddress,
+            imgCu: user?.photoURL
+           
         }
 
         const res = await axiosPublic.post('/payment', payDetails)
-        console.log(res.data.paymentUrl);
+        // console.log(res.data.paymentUrl);
 
         const rrr = await axiosPublic.post('/pay-setp', {
             status: 'pending',
