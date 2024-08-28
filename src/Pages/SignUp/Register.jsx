@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
+import useUser from '../../hooks/useUser';
 
 const API_KEY = import.meta.env.VITE_IMAGE_API_KEY
 const Hosting = `https://api.imgbb.com/1/upload?key=${API_KEY}`
@@ -15,7 +16,10 @@ const Register = () => {
     const { registerUser, updateUserProfile, googleLogin } = useAuth()
     const navigate = useNavigate()
     const [showPass, setShowPass] = useState(false)
+    const [userDB] = useUser()
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
+
+    console.log(userDB);
     const onSubmit = async (data) => {
         console.log(data);
         const imgeFile = { image: data.photo[0] }
@@ -30,14 +34,19 @@ const Register = () => {
         const password = data.password
         const name = data.name
         const photo = res.data.data.display_url
+        const findUser = userDB.find(u => u.email === data.email)
+        console.log(findUser);
         const userData = {
             name,
             email,
             photo,
             role: 'user'
         }
+
         console.log(userData);
-        const resUser = await axiosPublic.post('/user', userData)
+        if (!findUser) {
+            const resUser = await axiosPublic.post('/user', userData)
+        }
         registerUser(email, password)
             .then(async (userData) => {
                 updateUserProfile(photo, name)
@@ -63,7 +72,25 @@ const Register = () => {
     }
     const handelGoogleLogin = () => {
         googleLogin()
-        navigate('/')
+            .then(async (data) => {
+                const findUser = userDB.find(u => u.email === data.email)
+                console.log(findUser);
+                const userData = {
+                    name: data.user.displayName,
+                    email: data.user.email,
+                    photo: data.user.photoURL,
+                    role: 'user'
+                }
+
+                console.log(userData);
+                if (!findUser) {
+                    const resUser = await axiosPublic.post('/user', userData)
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        // navigate('/')
     }
 
     const handelShowBtn = () => {

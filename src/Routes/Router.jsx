@@ -47,7 +47,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <Dashboard></Dashboard>,
+        element: <ProtectedRoute><Dashboard></Dashboard></ProtectedRoute>,
         children: [
             {
                 path: '/dashboard/my-cart',
