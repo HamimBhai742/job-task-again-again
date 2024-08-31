@@ -53,8 +53,8 @@ const Register = () => {
         }
         else if(!role){
             const sellerData = {
-                sellerName:name,
-                sellerEmail:email,
+                name,
+                email,
                 photo,
                 businessCategory,
                 role: 'seller',

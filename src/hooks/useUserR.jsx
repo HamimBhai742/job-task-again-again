@@ -6,8 +6,6 @@ import useUser from './useUser';
 const useUserR = () => {
     const { user } = useAuth()
     const [userDB] = useUser()
-    // console.log(userDB, user);
-    // console.log(user.email);
     const { data: userR = [], isPending: userRLoding, refetch } = useQuery({
         queryKey: ['userR'],
         queryFn: async () => {

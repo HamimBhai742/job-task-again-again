@@ -6,8 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 const useSeller = () => {
     const { user } = useAuth()
     const [userDB] = useUser()
-    // console.log(userDB, user);
-    // console.log(user.email);
     const { data: seller = [], isPending: sellerLoding, refetch } = useQuery({
         queryKey: ['seller'],
         queryFn: async () => {
