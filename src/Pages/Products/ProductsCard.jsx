@@ -5,6 +5,8 @@ import useAxiosPublic from '../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
 import useMyCarts from '../../hooks/useMyCarts';
 import useAuth from '../../hooks/useAuth';
+import useAdmin from '../../hooks/useAdmin';
+import useSeller from '../../hooks/useSeller';
 
 const ProductsCard = ({ product }) => {
     // console.log(product);
@@ -12,13 +14,31 @@ const ProductsCard = ({ product }) => {
     const { user } = useAuth()
     const axiosPublic = useAxiosPublic()
     const [products] = useProducts()
+    const [admin] = useAdmin()
+    const [seller] = useSeller()
     const { productRating, productAddingTime, _id, productPrice, brandName, productName, productImg, productDescription, productCategory } = product
     console.log(products);
     const handelAddToCartBtn = async (id) => {
         // console.log(id);
+        if (admin) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "You can't add products to cart because you are an admin!",
+            });
+            return
+        }
+        else if (seller) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "You can't add products to cart because you are an seller!",
+            });
+            return
+        }
         const findMyItem = products.find(product => product._id === id)
         const findM = myCarts.find(product => product.productId === id)
-        const { productName, productImg, productPrice, productQuantity } = findMyItem
+        const { productName, productImg, productPrice } = findMyItem
         const addCart = {
             productName,
             productImg,

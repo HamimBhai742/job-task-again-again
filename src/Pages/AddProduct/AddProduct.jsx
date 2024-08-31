@@ -3,12 +3,18 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
+import useUser from '../../hooks/useUser';
+import useAuth from '../../hooks/useAuth';
 
 const API_KEY = import.meta.env.VITE_IMAGE_API_KEY
 const Hosting = `https://api.imgbb.com/1/upload?key=${API_KEY}`
 const AddProduct = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const axiosPublic = useAxiosPublic()
+    const [userDB] = useUser()
+    const { user } = useAuth()
+    const findUser = userDB.find(u => u.email === user?.email)
+    console.log(findUser);
     const onSubmit = async (data) => {
         console.log(data);
         const imgeFile = { image: data.productImg[0] }
@@ -18,32 +24,35 @@ const AddProduct = () => {
                 'content-type': 'multipart/form-data'
             }
         })
-        console.log(res.data.data.display_url);
+        // console.log(res.data.data.display_url);
         const timeAndDate = new Date().toLocaleString()
         const time = new Date()
 
         const addProduct = {
             productName: data.productName,
             brandName: data.brandName,
+            sellerEmail:findUser?.sellerEmail,
             productImg: res.data.data.display_url,
             productRating: data.productRating,
-            productCategory: data.productCategory,
+            productCategory: findUser?.productCategory,
             productDescription: data.productDescription,
             productPrice: parseFloat(data.productPrice),
             productAddingTime: timeAndDate,
             productDaTa: time
 
         }
+        console.log(addProduct);
+
         const resProduct = await axiosPublic.post('/products', addProduct)
         console.log(resProduct.data);
-        if (resProduct.data.insertedId) {
-            Swal.fire({
-                title: "Thank You!",
-                text: "Your product added successfully!",
-                icon: "success"
-            });
-            reset()
-        }
+        // if (resProduct.data.insertedId) {
+        //     Swal.fire({
+        //         title: "Thank You!",
+        //         text: "Your product added successfully!",
+        //         icon: "success"
+        //     });
+        //     reset()
+        // }
     }
     return (
         <section className="dark:bg-gray-100 dark:text-gray-900 max-sm:w-[350px] md:mx-5 mx-3 bg-teal-100 rounded-lg lg:mx-16  my-6">
@@ -62,16 +71,15 @@ const AddProduct = () => {
                             <label className="text-sm font-semibold">Product Name</label>
                             <input required {...register('productName')} type="text" placeholder="Product Name" className="w-full h-12 pl-3 rounded-md focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300" />
                         </div>
+
                         <div className="col-span-full sm:col-span-3">
                             <label className="text-sm font-semibold">Product Category</label>
-                            <select required {...register('productCategory')} className="select select-bordered w-full ">
-                                <option disabled selected>Select your category</option>
-                                <option value='Electronics'>Electronics</option>
-                                <option value='Fashion'>Fashion</option>
-                                <option value='Home and Kitchen'>Home and Kitchen</option>
-                                <option value='Health and Beauty'>Health and Beauty</option>
-                                <option value='Books and Stationery'>Books and Stationery</option>
-                            </select>
+                            <input disabled={findUser?.businessCategory} defaultValue={findUser?.businessCategory} required {...register('productCategory')} type="text" placeholder="Product Category" className="w-full h-12 pl-3 rounded-md focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300 bg-white" />
+                        </div>
+
+                        <div className="col-span-full sm:col-span-3">
+                            <label className="text-sm font-semibold">Seller Email</label>
+                            <input disabled={findUser?.email} defaultValue={findUser?.email} required {...register('sellerEmail')} type="text" placeholder="Product Category" className="w-full h-12 pl-3 rounded-md focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300 bg-white" />
                         </div>
 
                         <div className="col-span-full sm:col-span-3">

@@ -16,6 +16,13 @@ import PaySuccess from "../Pages/Payment/PaySuccess";
 import PayFail from "../Pages/Payment/PayFail";
 import PayCancel from "../Pages/Payment/PayCancel";
 import History from "../Pages/History/History";
+import AdminRoute from "../PrivateRoute/AdminROute";
+import UserRoutes from "../PrivateRoute/UserRoutes";
+import SellerRoute from "../PrivateRoute/sellerRoute";
+import ManageUser from "../Pages/ManageAll/ManageUser";
+import DashBoard from "../Pages/DashBoard/LeaderBoard";
+import LeaderBoard from "../Pages/DashBoard/LeaderBoard";
+import MyProducts from "../Pages/MyProducts/MyProducts";
 
 
 const router = createBrowserRouter([
@@ -47,15 +54,27 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <ProtectedRoute><Dashboard></Dashboard></ProtectedRoute>,
+        element: <Dashboard></Dashboard>,
         children: [
             {
+                path: '/dashboard/das',
+                element: <LeaderBoard></LeaderBoard>
+            },
+            {
                 path: '/dashboard/my-cart',
-                element: <MyCart></MyCart>
+                element: <ProtectedRoute><UserRoutes><MyCart></MyCart></UserRoutes></ProtectedRoute>
             },
             {
                 path: '/dashboard/history',
-                element: <History></History>
+                element: <ProtectedRoute><UserRoutes><History></History></UserRoutes></ProtectedRoute>
+            },
+            {
+                path: '/dashboard/manage-all',
+                element: <ProtectedRoute><AdminRoute><ManageUser></ManageUser></AdminRoute></ProtectedRoute>
+            },
+            {
+                path: '/dashboard/my-products',
+                element: <ProtectedRoute><SellerRoute><MyProducts></MyProducts></SellerRoute></ProtectedRoute>
             },
         ]
     },

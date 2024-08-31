@@ -5,16 +5,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import img from '/images.jpg'
 import Swal from 'sweetalert2';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import useUser from '../../hooks/useUser';
 
 const Login = () => {
     const { loginUser, googleLogin } = useAuth()
-    const { register, handleSubmit, formState: { errors } ,reset} = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [showPass, setShowPass] = useState(false)
-    const navigate=useNavigate()
+    const navigate = useNavigate()
+    const [userDB] = useUser()
     const onSubmit = async (data) => {
         console.log(data);
         const email = data.email
         const password = data.password
+        const findSl = userDB.find(s => s.sellerEmail === email)
+        if (findSl?.status === 'pending') {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "You cannot login because your ID has not been activated by admin!",
+            });
+            return
+        }
         loginUser(email, password)
             .then(userData => {
                 console.log(userData.user);

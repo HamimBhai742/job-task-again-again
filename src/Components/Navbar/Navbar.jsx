@@ -4,6 +4,10 @@ import useAuth from '../../hooks/useAuth';
 import img from '/images.jpg'
 import { GiShoppingCart } from 'react-icons/gi';
 import useMyCarts from '../../hooks/useMyCarts';
+import useUser from '../../hooks/useUser';
+import useAdmin from '../../hooks/useAdmin';
+import useSeller from '../../hooks/useSeller';
+import useUserR from '../../hooks/useUserR';
 
 const Navbar = () => {
     const { user, logoutUser } = useAuth()
@@ -11,6 +15,10 @@ const Navbar = () => {
     const totalAddItm = myCarts.reduce((p, q) => p + q.productQuantity, 0)
     // refetch()
     console.log(user);
+    const [admin] = useAdmin()
+    const [seller] = useSeller()
+    const [userR] = useUserR()
+    console.log(admin);
     const handelLogOutBtn = () => {
         logoutUser()
     }
@@ -50,8 +58,9 @@ const Navbar = () => {
                     <ul className="menu menu-horizontal px-1 gap-4">
                         <NavLink className='text-lg font-medium' to='/'>Home</NavLink>
                         <NavLink className='text-lg font-medium' to='/product'>Product</NavLink>
-                        <NavLink className='text-lg font-medium' to='/add-product'>Add Product</NavLink>
-                        <NavLink className='text-lg font-medium flex items-center gap-1' to='/dashboard/my-cart'>My Cart<p className='text-3xl flex'><GiShoppingCart></GiShoppingCart><sub className='text-sm'>{totalAddItm}</sub></p></NavLink>
+                        {seller && <NavLink className='text-lg font-medium' to='/add-product'>Add Product</NavLink>}
+                        {userR && <NavLink className='text-lg font-medium flex items-center gap-1' to='/dashboard/my-cart'>My Cart<p className='text-3xl flex'><GiShoppingCart></GiShoppingCart><sub className='text-sm'>{totalAddItm}</sub></p></NavLink>}
+                        <NavLink className='text-lg font-medium flex items-center gap-1' to='/dashboard/das'>Dashboard</NavLink>
                     </ul>
                 </div>
                 <div className="navbar-end">
