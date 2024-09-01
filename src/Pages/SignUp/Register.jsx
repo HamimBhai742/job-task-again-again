@@ -88,6 +88,7 @@ const Register = () => {
                 });
             })
     }
+    
     const handelGoogleLogin = () => {
         googleLogin()
             .then(async (datas) => {

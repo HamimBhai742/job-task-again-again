@@ -22,81 +22,124 @@ import AdminRoute from "/home/hamim/hamim/job-task-again/src/PrivateRoute/AdminR
 import ProtectedRoute from "/home/hamim/hamim/job-task-again/src/PrivateRoute/ProtectedRoute";
 import SellerRoute from "/home/hamim/hamim/job-task-again/src/PrivateRoute/SellerRoute";
 import UserRoutes from "/home/hamim/hamim/job-task-again/src/PrivateRoute/UserRoutes";
+import UpdateMyPro from "../Pages/Update/UpdateMyPro";
 
 const router = createBrowserRouter([
-    {
+  {
+    path: "/",
+    element: <Root></Root>,
+    children: [
+      {
         path: "/",
-        element: <Root></Root>,
-        children: [
-            {
-                path: '/',
-                element: <Home></Home>
-            },
-            {
-                path: '/product',
-                element: <ProtectedRoute><Products></Products></ProtectedRoute>
-            },
-            {
-                path: '/register',
-                element: <Register></Register>
-            },
-            {
-                path: '/login',
-                element: <Login></Login>
-            },
-            {
-                path: '/add-product',
-                element: <ProtectedRoute><AddProduct></AddProduct></ProtectedRoute>
-            },
-        ]
-    },
-    {
-        path: '/dashboard',
-        element: <Dashboard></Dashboard>,
-        children: [
-            {
-                path: '/dashboard/das',
-                element: <LeaderBoard></LeaderBoard>
-            },
-            {
-                path: '/dashboard/my-cart',
-                element: <ProtectedRoute><UserRoutes><MyCart></MyCart></UserRoutes></ProtectedRoute>
-            },
-            {
-                path: '/dashboard/history',
-                element: <ProtectedRoute><UserRoutes><History></History></UserRoutes></ProtectedRoute>
-            },
-            {
-                path: '/dashboard/manage-all',
-                element: <ProtectedRoute><AdminRoute><ManageUser></ManageUser></AdminRoute></ProtectedRoute>
-            },
-            {
-                path: '/dashboard/my-products',
-                element: <ProtectedRoute><SellerRoute><MyProducts></MyProducts></SellerRoute></ProtectedRoute>
-            },
-        ]
-    },
-    {
-        path: '/payment',
-        element: <PayLaout></PayLaout>,
-        children: [
-            {
-                path: '/payment/shopping',
-                element: <PaymentS1></PaymentS1>
-            },
-            {
-                path: '/payment/success',
-                element: <PaySuccess></PaySuccess>
-            },
-            {
-                path: '/payment/fail',
-                element: <PayFail></PayFail>
-            },
-            {
-                path: '/payment/cancel',
-                element: <PayCancel></PayCancel>
-            }
-        ]
-    },
+        element: <Home></Home>,
+      },
+      {
+        path: "/product",
+        element: (
+          <ProtectedRoute>
+            <Products></Products>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/register",
+        element: <Register></Register>,
+      },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/add-product",
+        element: (
+          <ProtectedRoute>
+            <AddProduct></AddProduct>
+          </ProtectedRoute>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard></Dashboard>,
+    children: [
+      {
+        path: "/dashboard/das",
+        element: <LeaderBoard></LeaderBoard>,
+      },
+      {
+        path: "/dashboard/my-cart",
+        element: (
+          <ProtectedRoute>
+            <UserRoutes>
+              <MyCart></MyCart>
+            </UserRoutes>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/dashboard/history",
+        element: (
+          <ProtectedRoute>
+            <UserRoutes>
+              <History></History>
+            </UserRoutes>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/dashboard/manage-all",
+        element: (
+          <ProtectedRoute>
+            <AdminRoute>
+              <ManageUser></ManageUser>
+            </AdminRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/dashboard/my-products",
+        element: (
+          <ProtectedRoute>
+            <SellerRoute>
+              <MyProducts></MyProducts>
+            </SellerRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/dashboard/update-my-product/:id",
+        element: (
+          <ProtectedRoute>
+            <SellerRoute>
+            <UpdateMyPro></UpdateMyPro>
+            </SellerRoute>
+          </ProtectedRoute>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/payment",
+    element: <PayLaout></PayLaout>,
+    children: [
+      {
+        path: "/payment/shopping",
+        element: <PaymentS1></PaymentS1>,
+      },
+      {
+        path: "/payment/success",
+        element: <PaySuccess></PaySuccess>,
+      },
+      {
+        path: "/payment/fail",
+        element: <PayFail></PayFail>,
+      },
+      {
+        path: "/payment/cancel",
+        element: <PayCancel></PayCancel>,
+      },
+    ],
+  },
 ]);
 export default router;
