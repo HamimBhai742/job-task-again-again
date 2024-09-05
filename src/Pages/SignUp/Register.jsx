@@ -104,6 +104,8 @@ const Register = () => {
                 if (!findUser) {
                     const resUser = await axiosPublic.post('/user', userData)
                 }
+
+                window.location.replace("/")
             })
             .catch((error) => {
                 console.log(error);

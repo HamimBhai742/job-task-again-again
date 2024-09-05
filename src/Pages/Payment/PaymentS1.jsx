@@ -55,26 +55,11 @@ const PaymentS1 = () => {
             status: 'pending',
             stepEmail: user?.email
         })
-
         const redrictUrl = res.data.paymentUrl
         if (redrictUrl) {
             window.location.replace(redrictUrl)
         }
     }
-
-    // const handelState = () => {
-    //     const value = document.getElementById('states').value
-    //     if (value === 'Dhaka') {
-    //         document.getElementById('radio1').checked = true
-    //         // document.getElementById('radio2').disabled = true
-    //         // document.getElementById('radio1').disabled = false
-    //     }
-    //     else {
-    //         document.getElementById('radio2').checked = true
-    //         // document.getElementById('radio1').disabled = true
-    //         // document.getElementById('radio2').disabled = false
-    //     }
-    // }
     return (
         <div className='bg-gray-100 max-w-[700px] p-10 mx-auto'>
             <div className='flex flex-col gap-3' onChange={handelShippingBtn}>

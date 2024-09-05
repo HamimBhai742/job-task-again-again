@@ -19,7 +19,7 @@ const PayFail = () => {
                     <p className='flex justify-center'><img src="/multiply.png" className='w-20' alt="" /></p>
                     <h2 class="text-2xl font-bold text-red-600 mb-4">Payment Failed</h2>
                     <p class="text-gray-700 mb-6">Unfortunately, your payment could not be processed. Please try again or contact support if the issue persists.</p>
-                    <button onClick={handelBackBtn} class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600" onclick="retryPayment()">
+                    <button onClick={handelBackBtn} class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
                         Retry Payment
                     </button>
                 </div>

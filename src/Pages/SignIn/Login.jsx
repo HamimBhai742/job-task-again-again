@@ -17,7 +17,7 @@ const Login = () => {
         console.log(data);
         const email = data.email
         const password = data.password
-        const findSl = userDB.find(s => s.sellerEmail === email)
+        const findSl = userDB.find(s => s.email === email)
         if (findSl?.status === 'pending') {
             Swal.fire({
                 icon: "error",
