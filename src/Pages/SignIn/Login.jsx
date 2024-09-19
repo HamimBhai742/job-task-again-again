@@ -36,11 +36,9 @@ const Login = () => {
                         icon: "success"
                     });
                     reset()
-                    navigate('/')
                 }
             })
             .catch(error => {
-                console.log(error);
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
@@ -51,7 +49,6 @@ const Login = () => {
 
     const handelGoogleLogin = () => {
         googleLogin()
-        navigate('/')
     }
     const handelShowBtn = () => {
         setShowPass(!showPass)

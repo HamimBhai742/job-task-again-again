@@ -1,9 +1,13 @@
 import React from 'react';
-
+import Banner from './Banner';
+import LatestProducts from './LatestProducts';
+import Categorization from './Categorization';
 const Home = () => {
     return (
-        <div>
-            <h3 className='text-5xl text-center font-semibold min-h-screen w-full flex justify-center items-center'>Comming Soon......</h3>
+        <div className='px-10 my-5'>
+            <Banner></Banner>
+            <LatestProducts></LatestProducts>
+            <Categorization></Categorization>
         </div>
     );
 };

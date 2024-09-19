@@ -67,7 +67,6 @@ const Register = () => {
         registerUser(email, password)
             .then(async (userData) => {
                 updateUserProfile(photo, name)
-                console.log(userData.user);
                 if (userData.user) {
                     Swal.fire({
                         title: "Thank You!",
@@ -80,7 +79,6 @@ const Register = () => {
                 }
             })
             .catch(error => {
-                console.log(error);
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
@@ -93,24 +91,19 @@ const Register = () => {
         googleLogin()
             .then(async (datas) => {
                 const findUser = userDB.find(u => u.email === datas.user.email)
-                console.log(findUser);
                 const userData = {
                     name: datas.user.displayName,
                     email: datas.user.email,
                     photo: datas.user.photoURL,
                     role: 'user'
                 }
-                console.log(userData);
                 if (!findUser) {
                     const resUser = await axiosPublic.post('/user', userData)
                 }
-
-                window.location.replace("/")
             })
             .catch((error) => {
                 console.log(error);
             })
-        // navigate('/')
     }
 
     const handelShowBtn = () => {

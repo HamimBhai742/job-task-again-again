@@ -4,10 +4,12 @@ import usePayHis from "../../hooks/usePayHis";
 import BarChat from "./BarChat";
 import useUser from "../../hooks/useUser";
 import Chart from "./Chart";
+import useSeller from "../../hooks/useSeller";
 
 const LeaderBoard = () => {
   const { user } = useAuth();
   const [payHis] = usePayHis();
+  const [seller] = useSeller()
   const payHisMy = payHis.filter((p) => p.cusEmail == user?.email);
   const pay = payHisMy.filter((p) => p.payStatus === "Success");
   const payF = payHisMy.filter((p) => p.payStatus !== "Success");
@@ -20,9 +22,15 @@ const LeaderBoard = () => {
   const payPayF = payHis.filter((p) => p.payStatus !== "Success");
   const tPF = payPayF.reduce((p, q) => p + q.amount, 0);
   console.log(find);
-
+console.log(seller)
   return (
-    <>
+    <>{
+      seller ?
+        <>
+          <p>Comming Soon..............</p>
+        </>
+      :
+        <>
       {find?.role === "admin" ? (
         <>
           <div className="my-10 p-10 flex gap-5">
@@ -74,6 +82,8 @@ const LeaderBoard = () => {
           <BarChat></BarChat>
         </>
       )}
+    </>
+    }
     </>
   );
 };

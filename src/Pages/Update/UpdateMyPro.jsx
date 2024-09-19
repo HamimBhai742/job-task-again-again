@@ -137,6 +137,21 @@ const UpdateMyPro = () => {
               </div>
 
               <div className="col-span-full sm:col-span-3">
+                <label className="text-sm font-semibold">Offer Price</label>
+                <input
+                  required
+                  {...register("offerPrice", { pattern: /^\d*\.?\d*$/ })}
+                  type="text"
+                  defaultValue={findProduct?.offerPrice}
+                  placeholder="Offer Price"
+                  className="w-full h-12 pl-3 rounded-md focus:ring focus:ring-opacity-75 dark:text-gray-50 focus:dark:ring-violet-600 dark:border-gray-300"
+                />
+                {errors.offerPrice && (
+                  <p className="text-red-600">Please provide only number</p>
+                )}
+              </div>
+
+              <div className="col-span-full sm:col-span-3">
                 <label className="text-sm font-semibold">Product Rating</label>
                 <input
                   required
@@ -155,8 +170,8 @@ const UpdateMyPro = () => {
                     Please provide rating only 0 to 5
                   </p>
                 )}
-                        </div>
-                        
+              </div>
+
               <div className="col-span-full">
                 <label className="text-sm font-semibold">
                   Product Description
