@@ -38,7 +38,7 @@ const AddProduct = () => {
       brandName: data.brandName,
       email: findUser?.email,
       productImg: res.data.data.display_url,
-      productRating: data.productRating,
+      productRating: parseFloat(data.productRating),
       productCategory: findUser?.businessCategory,
       productDescription: data.productDescription,
       productPrice: parseFloat(data.productPrice),

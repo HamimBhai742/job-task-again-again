@@ -8,7 +8,6 @@ import useUser from "../../hooks/useUser";
 import useAdmin from "../../hooks/useAdmin";
 import useSeller from "../../hooks/useSeller";
 import useUserR from "../../hooks/useUserR";
-
 const Navbar = () => {
   const { user, logoutUser } = useAuth();
   const [myCarts, refetch] = useMyCarts();
@@ -55,9 +54,6 @@ const Navbar = () => {
               <NavLink className="text-lg font-medium" to="/product">
                 Product
               </NavLink>
-              <NavLink className="text-lg font-medium" to="/add-product">
-                Add Product
-              </NavLink>
             </ul>
           </div>
           <div className="flex items-center">
@@ -77,11 +73,6 @@ const Navbar = () => {
             <NavLink className="text-lg font-medium" to="/product">
               Product
             </NavLink>
-            {seller && (
-              <NavLink className="text-lg font-medium" to="/add-product">
-                Add Product
-              </NavLink>
-            )}
             {userR && (
               <NavLink
                 className="text-lg font-medium flex items-center gap-1"
@@ -94,12 +85,14 @@ const Navbar = () => {
                 </p>
               </NavLink>
             )}
-            <NavLink
-              className="text-lg font-medium flex items-center gap-1"
-              to="/dashboard/das"
-            >
-              Dashboard
-            </NavLink>
+            {/* {user && (
+              <NavLink
+                className="text-lg font-medium flex items-center gap-1"
+                to="/dashboard/das"
+              >
+                Dashboard
+              </NavLink>
+            )} */}
           </ul>
         </div>
         <div className="navbar-end">
@@ -124,11 +117,28 @@ const Navbar = () => {
                 <li>
                   <div className="flex flex-col items-start gap-1">
                     <h3 className="font-semibold">{fiUser?.name}</h3>
-                    <p className="bg-green-100 text-green-600 font-medium px-3 rounded-full">{fiUser?.role}</p>
+                    <p className="bg-green-100 text-green-600 font-medium px-3 rounded-full">
+                      {fiUser?.role}
+                    </p>
                   </div>
                 </li>
-                <li className="p-3">
-                    <button onClick={handelLogOutBtn} className="bg-orange-100 text-orange-600 font-medium p-3 rounded-lg">Sign Out</button>
+                <li>
+                  {user && (
+                    <NavLink
+                      className="text-lg font-medium flex items-center gap-1"
+                      to="/dashboard"
+                    >
+                      Dashboard
+                    </NavLink>
+                  )}
+                </li>
+                <li className="p-2">
+                  <button
+                    onClick={handelLogOutBtn}
+                    className="bg-orange-100 text-orange-600 font-medium p-3 rounded-lg"
+                  >
+                    Sign Out
+                  </button>
                 </li>
               </ul>
             </div>
