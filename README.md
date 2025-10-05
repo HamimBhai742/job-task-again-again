@@ -1,4 +1,4 @@
-# Crazy Shop - E-commerce Platform
+# NeXa BuY - E-commerce Platform
 
 🔗 **Live Demo:** [https://job-task-again.web.app/](https://job-task-again.web.app/)
 
