@@ -1,169 +1,280 @@
-import React from "react";
+import React, { useState } from "react";
 import { GiShoppingCart } from "react-icons/gi";
-import { IoBagAddOutline, IoExitOutline } from "react-icons/io5";
+import { IoBagAddOutline, IoExitOutline, IoSearchOutline } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import { FaHistory } from "react-icons/fa";
+import { FaHistory, FaShoppingBag, FaUser } from "react-icons/fa";
 import { MdDashboard, MdManageAccounts } from "react-icons/md";
+import { HiSparkles } from "react-icons/hi";
 import useUserR from "../../hooks/useUserR";
 import useAdmin from "../../hooks/useAdmin";
 import useSeller from "../../hooks/useSeller";
 import toast from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Sidebar = () => {
   const { user, logoutUser } = useAuth();
-  console.log(user);
   const [userR] = useUserR();
   const [admin] = useAdmin();
   const [seller] = useSeller();
+  const [searchFocused, setSearchFocused] = useState(false);
   const navigate = useNavigate();
+  
   const handelLogoutBtn = () => {
     logoutUser();
     navigate("/login");
-    toast.success("Logout successfull")
+    toast.success("Logout successful");
   };
+
+  const menuItems = [
+    // Dashboard for non-sellers
+    ...(!seller ? [{
+      to: "/dashboard",
+      icon: MdDashboard,
+      label: "Dashboard",
+      color: "from-blue-500 to-purple-500",
+      end: true
+    }] : []),
+    
+    // Seller specific items
+    ...(seller ? [
+      {
+        to: "/add-product",
+        icon: IoBagAddOutline,
+        label: "Add Product",
+        color: "from-green-500 to-teal-500"
+      },
+      {
+        to: "/dashboard/my-products",
+        icon: GiShoppingCart,
+        label: "My Products",
+        color: "from-orange-500 to-red-500"
+      }
+    ] : []),
+    
+    // Admin specific items
+    ...(admin ? [{
+      to: "/dashboard/manage-all",
+      icon: MdManageAccounts,
+      label: "Manage All",
+      color: "from-purple-500 to-pink-500"
+    }] : []),
+    
+    // User specific items
+    ...(userR ? [
+      {
+        to: "/dashboard/my-cart",
+        icon: GiShoppingCart,
+        label: "My Cart",
+        color: "from-blue-500 to-cyan-500"
+      },
+      {
+        to: "/dashboard/history",
+        icon: FaHistory,
+        label: "History",
+        color: "from-indigo-500 to-purple-500"
+      }
+    ] : [])
+  ];
+
   return (
-    <div className="">
-      <aside className="flex fixed flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
-        <Link to="/">
-          <img className="w-24" src="/images.jpg" alt="" />
-        </Link>
-
-        <div className="relative mt-6">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <svg
-              className="w-5 h-5 text-gray-400"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path>
-            </svg>
-          </span>
-
-          <input
-            type="text"
-            className="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring"
-            placeholder="Search"
-          />
-        </div>
-
-        <div className="flex flex-col justify-between flex-1 mt-6">
-          <nav>
-            {!seller && (
-              <NavLink
-                to="/dashboard"
-                end
-                className="flex items-center px-4 py-2 mt-5 ss text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-amber-800"
-                href="#"
+    <motion.div
+      initial={{ x: -300 }}
+      animate={{ x: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="fixed left-0 top-0 h-screen z-40"
+    >
+      <aside className="flex flex-col w-72 h-full px-6 py-8 overflow-y-auto bg-gradient-to-b from-slate-900/95 via-blue-900/95 to-purple-900/95 backdrop-blur-xl border-r border-white/10 shadow-2xl">
+        
+        {/* Logo Section */}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="mb-8"
+        >
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <FaShoppingBag className="text-2xl text-white" />
+              </div>
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                className="absolute -top-1 -right-1"
               >
-                <span className="text-2xl">
-                  <MdDashboard></MdDashboard>
-                </span>
-                <span className="mx-4 font-medium">Dashboard</span>
-              </NavLink>
-            )}
+                <HiSparkles className="text-yellow-400 text-lg" />
+              </motion.div>
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
+                NeXaBuY
+              </h2>
+              <p className="text-xs text-white/60">Dashboard</p>
+            </div>
+          </Link>
+        </motion.div>
 
-            {seller && (
-              <NavLink
-                className="flex items-center px-4 py-2 mt-5 ss text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-amber-800"
-                to="/add-product"
-              >
-                <span className="text-2xl">
-                  <IoBagAddOutline></IoBagAddOutline>
-                </span>
-                <span className="mx-4 font-medium">Add Product</span>
-              </NavLink>
-            )}
-
-            {seller && (
-              <NavLink
-                to="/dashboard/my-products"
-                className="flex items-center px-4 py-2 mt-5 ss text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-amber-800"
-                href="#"
-              >
-                <span className="text-2xl">
-                  <GiShoppingCart></GiShoppingCart>
-                </span>
-                <span className="mx-4 font-medium">My Products</span>
-              </NavLink>
-            )}
-
-            {admin && (
-              <NavLink
-                to="/dashboard/manage-all"
-                className="flex items-center px-4 py-2 mt-5 ss text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-amber-800"
-                href="#"
-              >
-                <span className="text-2xl">
-                  <MdManageAccounts />
-                </span>
-                <span className="mx-4 font-medium">Manage All</span>
-              </NavLink>
-            )}
-
-            {userR && (
-              <NavLink
-                to="/dashboard/my-cart"
-                className="flex items-center px-4 py-2 mt-5 ss text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-amber-800"
-                href="#"
-              >
-                <span className="text-2xl">
-                  <GiShoppingCart></GiShoppingCart>
-                </span>
-                <span className="mx-4 font-medium">My Cart</span>
-              </NavLink>
-            )}
-
-            {userR && (
-              <NavLink
-                to="/dashboard/history"
-                className="flex items-center px-4 py-2 mt-5 ss text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-amber-800"
-                href="#"
-              >
-                <span className="text-2xl">
-                  <FaHistory></FaHistory>
-                </span>
-                <span className="mx-4 font-medium">History</span>
-              </NavLink>
-            )}
-
-            {/* <NavLink to='' className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="#">
-                            <span className="mx-4 font-medium"></span>
-                        </NavLink> */}
-
-            <hr className="my-6 border-gray-200 dark:border-gray-600" />
-          </nav>
-          <a href="#" className="flex items-center px-4 -mx-2">
-            <img
-              className="object-cover mx-2 rounded-full h-9 w-9"
-              src={user?.photoURL}
-              alt="avatar"
+        {/* Search Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="relative mb-8"
+        >
+          <div className="relative">
+            <IoSearchOutline className={`absolute left-4 top-1/2 transform -translate-y-1/2 text-lg transition-colors duration-300 ${
+              searchFocused ? 'text-blue-400' : 'text-white/50'
+            }`} />
+            <input
+              type="text"
+              placeholder="Search dashboard..."
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
+              className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300 backdrop-blur-sm"
             />
-            <span className="mx-2 font-medium text-gray-800 dark:text-gray-200">
-              {user?.displayName}
-            </span>
-          </a>
+          </div>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: searchFocused ? 1 : 0 }}
+            className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full origin-left"
+          />
+        </motion.div>
 
-          <button
-            onClick={handelLogoutBtn}
-            className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
-            href="#"
+        {/* Navigation Menu */}
+        <nav className="flex-1 space-y-2">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
           >
-            <span className="text-2xl">
-              <IoExitOutline></IoExitOutline>
-            </span>
+            <h3 className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-4">
+              Navigation
+            </h3>
+            
+            <div className="space-y-2">
+              {menuItems.map((item, index) => (
+                <motion.div
+                  key={item.to}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + index * 0.1 }}
+                >
+                  <NavLink
+                    to={item.to}
+                    end={item.end}
+                    className={({ isActive }) =>
+                      `group flex items-center px-4 py-3 rounded-2xl transition-all duration-300 relative overflow-hidden ${
+                        isActive
+                          ? 'bg-white/20 text-white shadow-lg'
+                          : 'text-white/70 hover:text-white hover:bg-white/10'
+                      }`
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {/* Background gradient for active state */}
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeBackground"
+                            className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-20 rounded-2xl`}
+                          />
+                        )}
+                        
+                        {/* Icon */}
+                        <div className={`relative z-10 p-2 rounded-xl transition-all duration-300 ${
+                          isActive 
+                            ? `bg-gradient-to-r ${item.color} text-white shadow-lg` 
+                            : 'bg-white/10 group-hover:bg-white/20'
+                        }`}>
+                          <item.icon className="text-lg" />
+                        </div>
+                        
+                        {/* Label */}
+                        <span className="relative z-10 ml-4 font-medium">
+                          {item.label}
+                        </span>
+                        
+                        {/* Active indicator */}
+                        {isActive && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute right-4 w-2 h-2 bg-white rounded-full"
+                          />
+                        )}
+                      </>
+                    )}
+                  </NavLink>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </nav>
 
-            <span className="mx-4 font-medium">Log Out</span>
-          </button>
-        </div>
+        {/* Divider */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="my-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+        />
+
+        {/* User Profile Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9 }}
+          className="space-y-4"
+        >
+          {/* User Info */}
+          <div className="flex items-center p-4 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/10">
+            <div className="relative">
+              <img
+                src={user?.photoURL}
+                alt="Profile"
+                className="w-12 h-12 rounded-xl object-cover border-2 border-white/30"
+              />
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white/50"></div>
+            </div>
+            <div className="ml-4 flex-1">
+              <h4 className="font-semibold text-white text-sm truncate">
+                {user?.displayName}
+              </h4>
+              <p className="text-xs text-white/60">
+                {admin ? 'Administrator' : seller ? 'Seller' : 'Customer'}
+              </p>
+            </div>
+          </div>
+
+          {/* Logout Button */}
+          <motion.button
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handelLogoutBtn}
+            className="w-full flex items-center px-4 py-3 bg-gradient-to-r from-red-500/20 to-pink-500/20 border border-red-500/30 text-red-300 rounded-2xl transition-all duration-300 hover:from-red-500/30 hover:to-pink-500/30 hover:border-red-400/50 hover:text-red-200 group"
+          >
+            <div className="p-2 bg-red-500/20 rounded-xl group-hover:bg-red-500/30 transition-colors duration-300">
+              <IoExitOutline className="text-lg" />
+            </div>
+            <span className="ml-4 font-medium">Log Out</span>
+          </motion.button>
+        </motion.div>
+
+        {/* Bottom Decoration */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.0 }}
+          className="mt-4 text-center"
+        >
+          <div className="flex justify-center space-x-1">
+            <div className="w-2 h-2 bg-blue-400/50 rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-purple-400/50 rounded-full animate-pulse delay-100"></div>
+            <div className="w-2 h-2 bg-pink-400/50 rounded-full animate-pulse delay-200"></div>
+          </div>
+          <p className="text-xs text-white/40 mt-2">v2.0.1</p>
+        </motion.div>
       </aside>
-    </div>
+    </motion.div>
   );
 };
 

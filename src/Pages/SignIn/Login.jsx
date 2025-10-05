@@ -5,16 +5,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import img from '/images.jpg'
 import Swal from 'sweetalert2';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import { FaGoogle, FaShoppingBag, FaEnvelope, FaLock } from 'react-icons/fa';
+import { HiSparkles } from 'react-icons/hi';
 import useUser from '../../hooks/useUser';
 import { PiSpinner } from 'react-icons/pi';
+import { motion } from 'framer-motion';
 
 const Login = () => {
     const { loginUser, googleLogin } = useAuth()
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [showPass, setShowPass] = useState(false)
+    const [focusedField, setFocusedField] = useState('')
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     const [userDB] = useUser()
+    
     const onSubmit = async (data) => {
         setLoading(true)
         console.log(data);
@@ -68,97 +73,251 @@ const Login = () => {
           }
         });
     }
-    const handelShowBtn = () => {
+    
+    const handelShowBtn = (e) => {
+        e.preventDefault();
         setShowPass(!showPass)
     }
+
     return (
-      <div className="w-full max-w-[500px] p-6 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <div className="flex justify-center mx-auto">
-          <img className="w-36" src={img} alt="" />
-        </div>
-
-        <form className="mt-6" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label className="block text-gray-800 font-medium">Email</label>
-            <input
-              required
-              {...register("email")}
-              type="email"
-              placeholder="Enter your email"
-              className="block w-full px-4 py-3 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-            />
-          </div>
-
-          <div className="mt-4 relative">
-            <div className="flex items-center justify-between">
-              <label for="password" className="block text-gray-800 font-medium">
-                Password
-              </label>
+        <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900">
+            {/* Animated Background Elements */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-blue-400/30 to-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-pink-400/30 to-red-400/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-400/20 to-blue-400/20 rounded-full blur-3xl animate-pulse delay-500"></div>
             </div>
 
-            <input
-              required
-              {...register("password", {
-                pattern:
-                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-              })}
-              type={showPass ? "text" : "password"}
-              placeholder="Enter your password"
-              className="block w-full px-4 py-3 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            {/* Floating Geometric Shapes */}
+            <motion.div
+                animate={{ 
+                    y: [0, -20, 0],
+                    rotate: [0, 180, 360]
+                }}
+                transition={{ 
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "linear"
+                }}
+                className="absolute top-20 left-20 w-4 h-4 bg-yellow-400/50 rounded-full"
             />
-            <button
-              className="absolute text-2xl right-3 bottom-3"
-              onClick={handelShowBtn}
+            <motion.div
+                animate={{ 
+                    y: [0, 30, 0],
+                    x: [0, 20, 0]
+                }}
+                transition={{ 
+                    duration: 15,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                }}
+                className="absolute top-40 right-32 w-6 h-6 bg-pink-400/50 rotate-45"
+            />
+            <motion.div
+                animate={{ 
+                    scale: [1, 1.2, 1],
+                    rotate: [0, -180, -360]
+                }}
+                transition={{ 
+                    duration: 25,
+                    repeat: Infinity,
+                    ease: "linear"
+                }}
+                className="absolute bottom-32 left-32 w-8 h-8 border-2 border-blue-400/50 rounded-full"
+            />
+
+            {/* Main Login Card */}
+            <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="relative z-10 w-full max-w-md mx-4"
             >
-              {showPass ? <IoMdEyeOff></IoMdEyeOff> : <IoMdEye></IoMdEye>}
-            </button>
-          </div>
-          <div className="mt-6">
-            <button className="w-full px-6 py-3 text-lg font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
-              {loading ? (
-                <PiSpinner className="m-auto animate-spin" />
-              ) : (
-                "Sign In"
-              )}{" "}
-            </button>
-          </div>
-        </form>
+                <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl p-8 relative overflow-hidden">
+                    {/* Card Background Pattern */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-white/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                    
+                    <div className="relative z-10">
+                        {/* Logo & Welcome Section */}
+                        <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                            className="text-center mb-8"
+                        >
+                            <div className="flex justify-center mb-4">
+                                <div className="relative">
+                                    <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                        <FaShoppingBag className="text-3xl text-white" />
+                                    </div>
+                                    <motion.div
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                                        className="absolute -top-2 -right-2"
+                                    >
+                                        <HiSparkles className="text-yellow-400 text-xl" />
+                                    </motion.div>
+                                </div>
+                            </div>
+                            <h1 className="text-3xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent mb-2">
+                                Welcome Back
+                            </h1>
+                            <p className="text-white/70 text-sm">
+                                Sign in to continue your shopping journey
+                            </p>
+                        </motion.div>
 
-        <div className="flex items-center justify-between mt-4">
-          <span className="w-1/5 border-b dark:border-gray-600 lg:w-1/5"></span>
+                        {/* Login Form */}
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                            {/* Email Field */}
+                            <motion.div
+                                initial={{ x: -50, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ delay: 0.3 }}
+                                className="relative"
+                            >
+                                <div className="relative">
+                                    <FaEnvelope className={`absolute left-4 top-1/2 transform -translate-y-1/2 transition-colors duration-300 ${
+                                        focusedField === 'email' ? 'text-blue-400' : 'text-white/50'
+                                    }`} />
+                                    <input
+                                        {...register("email")}
+                                        type="email"
+                                        required
+                                        placeholder="Enter your email"
+                                        onFocus={() => setFocusedField('email')}
+                                        onBlur={() => setFocusedField('')}
+                                        className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300 backdrop-blur-sm"
+                                    />
+                                </div>
+                                <motion.div
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ scaleX: focusedField === 'email' ? 1 : 0 }}
+                                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full origin-left"
+                                />
+                            </motion.div>
 
-          <a
-            href="#"
-            className="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline"
-          >
-            or login with Social Media
-          </a>
+                            {/* Password Field */}
+                            <motion.div
+                                initial={{ x: -50, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ delay: 0.4 }}
+                                className="relative"
+                            >
+                                <div className="relative">
+                                    <FaLock className={`absolute left-4 top-1/2 transform -translate-y-1/2 transition-colors duration-300 ${
+                                        focusedField === 'password' ? 'text-blue-400' : 'text-white/50'
+                                    }`} />
+                                    <input
+                                        {...register("password", {
+                                            pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                        })}
+                                        type={showPass ? "text" : "password"}
+                                        required
+                                        placeholder="Enter your password"
+                                        onFocus={() => setFocusedField('password')}
+                                        onBlur={() => setFocusedField('')}
+                                        className="w-full pl-12 pr-12 py-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300 backdrop-blur-sm"
+                                    />
+                                    <motion.button
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.9 }}
+                                        type="button"
+                                        onClick={handelShowBtn}
+                                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white transition-colors duration-300"
+                                    >
+                                        {showPass ? <IoMdEyeOff className="text-xl" /> : <IoMdEye className="text-xl" />}
+                                    </motion.button>
+                                </div>
+                                <motion.div
+                                    initial={{ scaleX: 0 }}
+                                    animate={{ scaleX: focusedField === 'password' ? 1 : 0 }}
+                                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full origin-left"
+                                />
+                            </motion.div>
 
-          <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/5"></span>
+                            {/* Submit Button */}
+                            <motion.div
+                                initial={{ y: 50, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                            >
+                                <motion.button
+                                    whileHover={{ scale: 1.02, boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}
+                                    whileTap={{ scale: 0.98 }}
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <span className="relative z-10 flex items-center justify-center">
+                                        {loading ? (
+                                            <motion.div
+                                                animate={{ rotate: 360 }}
+                                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                            >
+                                                <PiSpinner className="text-2xl" />
+                                            </motion.div>
+                                        ) : (
+                                            "Sign In"
+                                        )}
+                                    </span>
+                                </motion.button>
+                            </motion.div>
+                        </form>
+
+                        {/* Divider */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.6 }}
+                            className="flex items-center my-8"
+                        >
+                            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                            <span className="px-4 text-white/60 text-sm font-medium">or continue with</span>
+                            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                        </motion.div>
+
+                        {/* Google Login Button */}
+                        <motion.div
+                            initial={{ y: 50, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.7 }}
+                        >
+                            <motion.button
+                                whileHover={{ scale: 1.02, y: -2 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={handelGoogleLogin}
+                                type="button"
+                                className="w-full py-4 bg-white/10 border border-white/20 text-white font-medium rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300 flex items-center justify-center space-x-3 group"
+                            >
+                                <FaGoogle className="text-xl group-hover:text-red-400 transition-colors duration-300" />
+                                <span>Continue with Google</span>
+                            </motion.button>
+                        </motion.div>
+
+                        {/* Sign Up Link */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.8 }}
+                            className="text-center mt-8"
+                        >
+                            <p className="text-white/70 text-sm">
+                                Don't have an account?{' '}
+                                <Link 
+                                    to="/register"
+                                    className="text-blue-400 hover:text-blue-300 font-semibold hover:underline transition-colors duration-300"
+                                >
+                                    Sign Up
+                                </Link>
+                            </p>
+                        </motion.div>
+                    </div>
+                </div>
+            </motion.div>
         </div>
-
-        <div className="flex items-center mt-6 -mx-2">
-          <button
-            onClick={handelGoogleLogin}
-            type="button"
-            className="flex items-center justify-center w-full px-6 py-3 mx-2 text-lg font-medium text-white transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:bg-blue-400 focus:outline-none"
-          >
-            <svg className="w-4 h-4 mx-2 fill-current" viewBox="0 0 24 24">
-              <path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"></path>
-            </svg>
-            <span className="hidden mx-2 sm:inline">Sign in with Google</span>
-          </button>
-        </div>
-        <p className="mt-5 text-sm text-center text-gray-400">
-          {" "}
-          Don't have an account?{" "}
-          <Link to="/register">
-            <a className="font-semibold text-gray-700 hover:text-blue-500  hover:underline">
-              Sign Up
-            </a>
-          </Link>
-        </p>
-      </div>
     );
 };
 
