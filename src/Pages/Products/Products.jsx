@@ -32,7 +32,11 @@ const Products = () => {
   const [categorys, setCategory] = useState(false);
   const [search, setSearch] = useState(null);
   const [sea, setSea] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
   const handelOpenBtn = () => {
     setOpen(!open);
   };
@@ -168,40 +172,44 @@ const Products = () => {
         </div>
 
         <div>
-          <button onClick={handelOpenBtn} className="text-5xl">
+          <button onClick={toggleSidebar} className="text-5xl">
             <MdOutlineMenuOpen />
           </button>
-          <div className={open ? "mb-3" : "hidden"}>
+          <div
+            className={`fixed top-0 left-0 h-full w-80 z-50 bg-white shadow-lg transform ${
+              isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } transition-transform duration-300 ease-in-out`}
+          >
             <form onSubmit={handelCategorization}>
-              <h3 className="text-2xl font-semibold">Brand Name</h3>
+              <h3 className="text-xl font-semibold">Brand Name</h3>
               <div className="grid grid-cols-2 gap-1">
                 {brand.map((b) => (
                   <>
                     <div className="flex gap-1">
                       <input type="radio" value={b} name="brandName" />
-                      <span>{b}</span>
+                      <span className="text-sm">{b}</span>
                     </div>
                   </>
                 ))}
                 <div className="flex gap-1">
                   <input type="radio" value="" name="brandName" />
-                  <span>None</span>
+                  <span className="text-sm">None</span>
                 </div>
               </div>
-              <h3 className="text-2xl font-semibold mt-3">Product Category</h3>
+              <h3 className="text-xl font-semibold mt-3">Product Category</h3>
               {category.map((c) => (
                 <>
                   <div className="flex gap-1">
                     <input type="radio" name="productCategory" value={c} />
-                    <span>{c}</span>
+                    <span className="text-sm">{c}</span>
                   </div>
                 </>
               ))}
               <div className="flex gap-1">
                 <input type="radio" value="" name="productCategory" />
-                <span>None</span>
+                <span className="text-sm">None</span>
               </div>
-              <h3 className="text-2xl font-semibold mt-3">Price Range</h3>
+              <h3 className="text-xl font-semibold mt-3">Price Range</h3>
               <input
                 placeholder="Min price"
                 className="input input-bordered w-full max-w-28"

@@ -2,36 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-
 * {
   font-family: "Roboto", sans-serif;
 }
-.font-playwrite{
-    font-family: "Playwrite CU", cursive;
+.font-playwrite {
+  font-family: "Playwrite CU";
 }
 .active {
   color: brown;
   font-weight: 700;
 }
 
-.dashboard{
+.dashboard {
   display: grid;
   grid-template-columns: 250px 1fr;
   height: 100vh;
 }
 
-.ss.active{
+.ss.active {
   color: brown;
   background-color: rgb(243, 244, 246);
 }
 
-.bgBanner{
+.bgBanner {
   background: url("/public/mjhjh.png");
   width: full;
   height: 600px;
   background-size: cover;
 }
-
 
 .swiper {
   width: 100%;
@@ -77,3 +75,17 @@
   margin: 0 10px;
   font-size: 13px;
 }
+
+
+/* .add-to-cart span{
+  display: block;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--text-color);
+  opacity: var(--text-o);
+  transform: translateX(var(--text-x)) translateZ(0);
+} */

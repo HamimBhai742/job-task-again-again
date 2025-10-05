@@ -1,26 +1,33 @@
 import React from "react";
 import { GiShoppingCart } from "react-icons/gi";
 import { IoBagAddOutline, IoExitOutline } from "react-icons/io5";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { FaHistory } from "react-icons/fa";
 import { MdDashboard, MdManageAccounts } from "react-icons/md";
 import useUserR from "../../hooks/useUserR";
 import useAdmin from "../../hooks/useAdmin";
 import useSeller from "../../hooks/useSeller";
+import toast from "react-hot-toast";
 
 const Sidebar = () => {
-  const { user } = useAuth();
+  const { user, logoutUser } = useAuth();
   console.log(user);
   const [userR] = useUserR();
   const [admin] = useAdmin();
   const [seller] = useSeller();
+  const navigate = useNavigate();
+  const handelLogoutBtn = () => {
+    logoutUser();
+    navigate("/login");
+    toast.success("Logout successfull")
+  };
   return (
     <div className="">
       <aside className="flex fixed flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
-        <a href="#">
+        <Link to="/">
           <img className="w-24" src="/images.jpg" alt="" />
-        </a>
+        </Link>
 
         <div className="relative mt-6">
           <span className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -48,17 +55,19 @@ const Sidebar = () => {
 
         <div className="flex flex-col justify-between flex-1 mt-6">
           <nav>
-           {!seller && <NavLink
-              to="/dashboard"
-              end
-              className="flex items-center px-4 py-2 mt-5 ss text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-amber-800"
-              href="#"
-            >
-              <span className="text-2xl">
-                <MdDashboard></MdDashboard>
-              </span>
-              <span className="mx-4 font-medium">Dashboard</span>
-            </NavLink>}
+            {!seller && (
+              <NavLink
+                to="/dashboard"
+                end
+                className="flex items-center px-4 py-2 mt-5 ss text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-amber-800"
+                href="#"
+              >
+                <span className="text-2xl">
+                  <MdDashboard></MdDashboard>
+                </span>
+                <span className="mx-4 font-medium">Dashboard</span>
+              </NavLink>
+            )}
 
             {seller && (
               <NavLink
@@ -66,7 +75,7 @@ const Sidebar = () => {
                 to="/add-product"
               >
                 <span className="text-2xl">
-                 <IoBagAddOutline></IoBagAddOutline>
+                  <IoBagAddOutline></IoBagAddOutline>
                 </span>
                 <span className="mx-4 font-medium">Add Product</span>
               </NavLink>
@@ -141,8 +150,8 @@ const Sidebar = () => {
             </span>
           </a>
 
-          <Link
-            to="/"
+          <button
+            onClick={handelLogoutBtn}
             className="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
             href="#"
           >
@@ -150,8 +159,8 @@ const Sidebar = () => {
               <IoExitOutline></IoExitOutline>
             </span>
 
-            <span className="mx-4 font-medium">Exit</span>
-          </Link>
+            <span className="mx-4 font-medium">Log Out</span>
+          </button>
         </div>
       </aside>
     </div>

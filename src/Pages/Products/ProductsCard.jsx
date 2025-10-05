@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactStars from "react-stars";
 import useProducts from "../../hooks/useProducts";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import useMyCarts from "../../hooks/useMyCarts";
+import { motion, useAnimation } from "framer-motion";
 import useAuth from "../../hooks/useAuth";
 import useAdmin from "../../hooks/useAdmin";
 import useSeller from "../../hooks/useSeller";
-
+import Lottie from "lottie-react";
+import animationData from "../../JSONFile/addtocart.json";
+import { ShoppingCart } from "lucide-react";
 const ProductsCard = ({ product }) => {
+  const controls = useAnimation();
+  const [clicked, setClicked] = useState(false);
   // console.log(product);
   const [myCarts, refetch] = useMyCarts();
   const { user } = useAuth();
@@ -16,6 +21,7 @@ const ProductsCard = ({ product }) => {
   const [products] = useProducts();
   const [admin] = useAdmin();
   const [seller] = useSeller();
+  const [loading, setLoading] = useState(false);
   const {
     productRating,
     productAddingTime,
@@ -30,8 +36,19 @@ const ProductsCard = ({ product }) => {
   } = product;
   // console.log(products);
   const handelAddToCartBtn = async (id) => {
+    setLoading(true);
+    setClicked(true);
+    // Trigger the animation
+    await controls.start({
+      x: [0, 20, -10, 0],
+      transition: { duration: 0.6, ease: "easeInOut" },
+    });
+
     // console.log(id);
     if (admin) {
+      setLoading(false);
+      setClicked(false);
+
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -39,6 +56,9 @@ const ProductsCard = ({ product }) => {
       });
       return;
     } else if (seller) {
+      setLoading(false);
+      setClicked(false);
+
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -62,6 +82,9 @@ const ProductsCard = ({ product }) => {
       const res = await axiosPublic.post("/add-to-cart", addCart);
       console.log(res.data);
       if (res.data.insertedId) {
+        setLoading(false);
+        setClicked(false);
+
         Swal.fire({
           title: "Thank You!",
           text: "Your product add to cart!",
@@ -83,6 +106,9 @@ const ProductsCard = ({ product }) => {
       );
       console.log(re.data);
       if (re.data.modifiedCount) {
+        setLoading(false);
+        setClicked(false);
+
         Swal.fire({
           title: "Thank You!",
           text: "Your product add to cart!",
@@ -95,6 +121,11 @@ const ProductsCard = ({ product }) => {
 
     // console.log(addCart);
   };
+
+  // const handleAddToCart = async () => {
+
+  // };
+
   return (
     <div className="card bg-base-100 w-96 shadow-xl">
       <figure className="relative">
@@ -124,10 +155,19 @@ const ProductsCard = ({ product }) => {
             </h3>
           </div>
           <button
-            onClick={() => handelAddToCartBtn(_id)}
-            className="btn btn-accent"
+            onClick={()=>handelAddToCartBtn(_id)}
+            className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-full shadow-md hover:bg-green-700 transition-all font-semibold relative overflow-hidden"
           >
-            Add to cart
+            <motion.span animate={controls}>
+              <ShoppingCart className="w-5 h-5" />
+            </motion.span>
+            <span
+              className={`${
+                clicked ? "opacity-0" : "opacity-100"
+              } transition-opacity duration-300`}
+            >
+              Add to Cart
+            </span>
           </button>
         </div>
       </div>

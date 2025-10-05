@@ -1,6 +1,7 @@
 import React from 'react';
 import usePayHis from '../../hooks/usePayHis';
 import useAuth from '../../hooks/useAuth';
+import TableRowData from './TableRowData';
 
 const History = () => {
     const { user } = useAuth()
@@ -26,16 +27,7 @@ const History = () => {
                     <tbody>
                         {/* row 1 */}
                         {
-                            payHisMy.map((pay, idx) => <tr>
-                                <th>{idx + 1}</th>
-                                <td>{pay.timeAndDate}</td>
-                                <td>{pay.transactionID}</td>
-                                <td>${pay.amount.toFixed(2)}</td>
-                                <td>
-                                    <p className={pay.payStatus === 'Success' ? 'bg-green-100 text-center rounded-full text-green-600 font-semibold' : 'bg-red-100 text-red-600 font-medium text-center rounded-full'}>{pay.payStatus}</p>
-                                </td>
-                                <td>{pay.cardType || 'Cencelled'}</td>
-                            </tr>)
+                            payHisMy.map((pay, idx) => <TableRowData pay={pay} idx={idx} key={idx} />)
                         }
                     </tbody>
                 </table>

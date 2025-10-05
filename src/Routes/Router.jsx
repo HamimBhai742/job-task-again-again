@@ -23,6 +23,7 @@ import ProtectedRoute from "/home/hamim/hamim/job-task-again/src/PrivateRoute/Pr
 import SellerRoute from "/home/hamim/hamim/job-task-again/src/PrivateRoute/SellerRoute";
 import UserRoutes from "/home/hamim/hamim/job-task-again/src/PrivateRoute/UserRoutes";
 import UpdateMyPro from "../Pages/Update/UpdateMyPro";
+import HelpSupport from "../Pages/helpSupport/HelpSupport";
 
 const router = createBrowserRouter([
   {
@@ -112,10 +113,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <SellerRoute>
-            <UpdateMyPro></UpdateMyPro>
+              <UpdateMyPro></UpdateMyPro>
             </SellerRoute>
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/dashboard/help&support",
+        element:<HelpSupport/>
       },
     ],
   },

@@ -8,10 +8,12 @@ import { useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useUser from "../../hooks/useUser";
+import { PiSpinner } from "react-icons/pi";
 
 const API_KEY = import.meta.env.VITE_IMAGE_API_KEY;
 const Hosting = `https://api.imgbb.com/1/upload?key=${API_KEY}`;
 const Register = () => {
+  const [loading, setLoading] = useState(false);
   const axiosPublic = useAxiosPublic();
   const { registerUser, updateUserProfile, googleLogin, logoutUser } =
     useAuth();
@@ -28,6 +30,7 @@ const Register = () => {
 
   console.log(userDB);
   const onSubmit = async (data) => {
+    setLoading(true);
     console.log(data);
     const imgeFile = { image: data.photo[0] };
     console.log(imgeFile, "imgfile");
@@ -78,6 +81,7 @@ const Register = () => {
             text: "Your register successfully!",
             icon: "success",
           });
+          setLoading(false);
           reset();
           navigate("/login");
           logoutUser();
@@ -102,6 +106,7 @@ const Register = () => {
           photo: datas.user.photoURL,
           role: "user",
         };
+        navigate("/");
         if (!findUser) {
           const resUser = await axiosPublic.post("/user", userData);
         }
@@ -230,7 +235,11 @@ const Register = () => {
         </div>
         <div className="mt-6">
           <button className="w-full px-6 py-3 text-lg font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
-            Sign Up
+            {loading ? (
+              <PiSpinner className="m-auto animate-spin" />
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </div>
       </form>
