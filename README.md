@@ -4,7 +4,7 @@
 
 ## 📋 Project Overview
 
-Crazy Shop is a modern, full-stack e-commerce platform built with React and Firebase. It provides a complete shopping experience with user authentication, product management, shopping cart functionality, and secure payment processing. The application features role-based access control for users, sellers, and administrators.
+NeXa BuY is a modern, full-stack e-commerce platform built with React and Firebase. It provides a complete shopping experience with user authentication, product management, shopping cart functionality, and secure payment processing. The application features role-based access control for users, sellers, and administrators.
 
 ## ✨ Key Features
 
