@@ -6,10 +6,10 @@ import useUser from "../../hooks/useUser";
 import Chart from "./Chart";
 import useSeller from "../../hooks/useSeller";
 import { motion } from "framer-motion";
-import { 
-  FaDollarSign, 
-  FaShoppingCart, 
-  FaCheckCircle, 
+import {
+  FaDollarSign,
+  FaShoppingCart,
+  FaCheckCircle,
   FaTimesCircle,
   FaChartLine,
   FaUsers,
@@ -18,12 +18,66 @@ import {
 } from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 
+// Animated Counter Component
+const AnimatedCounter = ({ value, prefix = "", suffix = "" }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCount(prev => {
+        if (prev < value) {
+          return Math.min(prev + Math.ceil(value / 50), value);
+        }
+        return value;
+      });
+    }, 50);
+
+    return () => clearInterval(timer);
+  }, [value]);
+
+  return <span>{prefix}{count.toFixed(2)}{suffix}</span>;
+};
+
+// Stats Card Component - Moved outside to prevent recreation
+const StatsCard = ({ title, value, icon: Icon, gradient, delay, prefix = "", suffix = "" }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ duration: 0.6, delay }}
+    whileHover={{ scale: 1.05, y: -5 }}
+    className={`relative bg-gradient-to-br ${gradient} rounded-3xl p-6 shadow-2xl overflow-hidden group cursor-pointer`}
+  >
+    {/* Background Pattern */}
+    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-16 translate-x-16"></div>
+
+    <div className="relative z-10">
+      <div className="flex items-center justify-between mb-4">
+        <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
+          <Icon className="text-2xl text-white" />
+        </div>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        >
+          <HiSparkles className="text-white/60 text-xl" />
+        </motion.div>
+      </div>
+
+      <h3 className="text-white/80 text-sm font-medium mb-2">{title}</h3>
+      <p className="text-3xl font-bold text-white">
+        <AnimatedCounter value={value} prefix={prefix} suffix={suffix} />
+      </p>
+    </div>
+  </motion.div>
+);
+
 const LeaderBoard = () => {
   const { user } = useAuth();
   const [payHis] = usePayHis();
   const [seller] = useSeller();
   const [currentTime, setCurrentTime] = useState(new Date());
-  
+
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -47,60 +101,6 @@ const LeaderBoard = () => {
     if (hour < 18) return "Good Afternoon";
     return "Good Evening";
   };
-
-  // Animated Counter Component
-  const AnimatedCounter = ({ value, prefix = "", suffix = "" }) => {
-    const [count, setCount] = useState(0);
-    
-    useEffect(() => {
-      const timer = setInterval(() => {
-        setCount(prev => {
-          if (prev < value) {
-            return Math.min(prev + Math.ceil(value / 50), value);
-          }
-          return value;
-        });
-      }, 50);
-      
-      return () => clearInterval(timer);
-    }, [value]);
-
-    return <span>{prefix}{count.toFixed(2)}{suffix}</span>;
-  };
-
-  // Stats Card Component
-  const StatsCard = ({ title, value, icon: Icon, gradient, delay, prefix = "", suffix = "" }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.6, delay }}
-      whileHover={{ scale: 1.05, y: -5 }}
-      className={`relative bg-gradient-to-br ${gradient} rounded-3xl p-6 shadow-2xl overflow-hidden group cursor-pointer`}
-    >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-16 translate-x-16"></div>
-      
-      <div className="relative z-10">
-        <div className="flex items-center justify-between mb-4">
-          <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
-            <Icon className="text-2xl text-white" />
-          </div>
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          >
-            <HiSparkles className="text-white/60 text-xl" />
-          </motion.div>
-        </div>
-        
-        <h3 className="text-white/80 text-sm font-medium mb-2">{title}</h3>
-        <p className="text-3xl font-bold text-white">
-          <AnimatedCounter value={value} prefix={prefix} suffix={suffix} />
-        </p>
-      </div>
-    </motion.div>
-  );
 
   // Admin Stats
   const adminStats = [
@@ -168,7 +168,7 @@ const LeaderBoard = () => {
 
   if (seller) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 p-6">
+      <div className="w-full">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -185,7 +185,7 @@ const LeaderBoard = () => {
             >
               <FaStore className="text-3xl text-white" />
             </motion.div>
-            
+
             <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-purple-100 to-pink-100 bg-clip-text text-transparent mb-4">
               Seller Dashboard
             </h1>
@@ -203,11 +203,11 @@ const LeaderBoard = () => {
           >
             <div className="mb-8">
               <motion.div
-                animate={{ 
+                animate={{
                   scale: [1, 1.1, 1],
                   rotate: [0, 5, -5, 0]
                 }}
-                transition={{ 
+                transition={{
                   duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut"
@@ -216,12 +216,12 @@ const LeaderBoard = () => {
               >
                 🚀
               </motion.div>
-              
+
               <h2 className="text-3xl font-bold text-white mb-4">
                 Exciting Features Coming Soon!
               </h2>
               <p className="text-white/70 text-lg max-w-2xl mx-auto">
-                We're working hard to bring you amazing seller tools including analytics, 
+                We're working hard to bring you amazing seller tools including analytics,
                 inventory management, order tracking, and much more.
               </p>
             </div>
@@ -238,7 +238,7 @@ const LeaderBoard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 p-6">
+    <div className="w-full">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <motion.div
@@ -256,7 +256,7 @@ const LeaderBoard = () => {
                 {find?.role === "admin" ? "Admin Dashboard Overview" : "Your Personal Dashboard"}
               </p>
             </div>
-            
+
             <div className="mt-4 md:mt-0 flex items-center space-x-4">
               <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-2">
                 <FaClock className="text-blue-400" />
@@ -321,7 +321,7 @@ const LeaderBoard = () => {
                   </h3>
                   <p className="text-white/70 text-sm mt-1">Manage your account</p>
                 </div>
-                
+
                 <div className="space-y-4">
                   <motion.button
                     whileHover={{ scale: 1.02, x: 10 }}
@@ -331,7 +331,7 @@ const LeaderBoard = () => {
                     <FaShoppingCart className="text-xl" />
                     <span className="font-medium">View My Cart</span>
                   </motion.button>
-                  
+
                   <motion.button
                     whileHover={{ scale: 1.02, x: 10 }}
                     whileTap={{ scale: 0.98 }}

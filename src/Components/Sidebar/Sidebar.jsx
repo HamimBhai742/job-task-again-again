@@ -19,7 +19,7 @@ const Sidebar = () => {
   const [seller] = useSeller();
   const [searchFocused, setSearchFocused] = useState(false);
   const navigate = useNavigate();
-  
+
   const handelLogoutBtn = () => {
     logoutUser();
     navigate("/login");
@@ -35,7 +35,7 @@ const Sidebar = () => {
       color: "from-blue-500 to-purple-500",
       end: true
     }] : []),
-    
+
     // Seller specific items
     ...(seller ? [
       {
@@ -51,7 +51,7 @@ const Sidebar = () => {
         color: "from-orange-500 to-red-500"
       }
     ] : []),
-    
+
     // Admin specific items
     ...(admin ? [{
       to: "/dashboard/manage-all",
@@ -59,7 +59,7 @@ const Sidebar = () => {
       label: "Manage All",
       color: "from-purple-500 to-pink-500"
     }] : []),
-    
+
     // User specific items
     ...(userR ? [
       {
@@ -82,10 +82,10 @@ const Sidebar = () => {
       initial={{ x: -300 }}
       animate={{ x: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed left-0 top-0 h-screen z-40"
+      className="fixed left-0 top-0 h-screen z-40 hidden"
     >
       <aside className="flex flex-col w-72 h-full px-6 py-8 overflow-y-auto bg-gradient-to-b from-slate-900/95 via-blue-900/95 to-purple-900/95 backdrop-blur-xl border-r border-white/10 shadow-2xl">
-        
+
         {/* Logo Section */}
         <motion.div
           whileHover={{ scale: 1.05 }}
@@ -149,7 +149,7 @@ const Sidebar = () => {
             <h3 className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-4">
               Navigation
             </h3>
-            
+
             <div className="space-y-2">
               {menuItems.map((item, index) => (
                 <motion.div
@@ -178,21 +178,21 @@ const Sidebar = () => {
                             className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-20 rounded-2xl`}
                           />
                         )}
-                        
+
                         {/* Icon */}
                         <div className={`relative z-10 p-2 rounded-xl transition-all duration-300 ${
-                          isActive 
-                            ? `bg-gradient-to-r ${item.color} text-white shadow-lg` 
+                          isActive
+                            ? `bg-gradient-to-r ${item.color} text-white shadow-lg`
                             : 'bg-white/10 group-hover:bg-white/20'
                         }`}>
                           <item.icon className="text-lg" />
                         </div>
-                        
+
                         {/* Label */}
                         <span className="relative z-10 ml-4 font-medium">
                           {item.label}
                         </span>
-                        
+
                         {/* Active indicator */}
                         {isActive && (
                           <motion.div

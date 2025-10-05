@@ -8,13 +8,12 @@ import { motion, useAnimation } from "framer-motion";
 import useAuth from "../../hooks/useAuth";
 import useAdmin from "../../hooks/useAdmin";
 import useSeller from "../../hooks/useSeller";
-import Lottie from "lottie-react";
-import animationData from "../../JSONFile/addtocart.json";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Heart, Eye } from "lucide-react";
+
 const ProductsCard = ({ product }) => {
   const controls = useAnimation();
   const [clicked, setClicked] = useState(false);
-  // console.log(product);
+  const [isHovered, setIsHovered] = useState(false);
   const [myCarts, refetch] = useMyCarts();
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
@@ -22,6 +21,7 @@ const ProductsCard = ({ product }) => {
   const [admin] = useAdmin();
   const [seller] = useSeller();
   const [loading, setLoading] = useState(false);
+
   const {
     productRating,
     productAddingTime,
@@ -34,21 +34,19 @@ const ProductsCard = ({ product }) => {
     productDescription,
     productCategory,
   } = product;
-  // console.log(products);
+
   const handelAddToCartBtn = async (id) => {
     setLoading(true);
     setClicked(true);
-    // Trigger the animation
+
     await controls.start({
       x: [0, 20, -10, 0],
       transition: { duration: 0.6, ease: "easeInOut" },
     });
 
-    // console.log(id);
     if (admin) {
       setLoading(false);
       setClicked(false);
-
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -58,7 +56,6 @@ const ProductsCard = ({ product }) => {
     } else if (seller) {
       setLoading(false);
       setClicked(false);
-
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -66,6 +63,7 @@ const ProductsCard = ({ product }) => {
       });
       return;
     }
+
     const findMyItem = products.find((product) => product._id === id);
     const findM = myCarts.find((product) => product.productId === id);
     const { productName, productImg, productPrice, offerPrice } = findMyItem;
@@ -77,14 +75,12 @@ const ProductsCard = ({ product }) => {
       productQuantity: 1,
       myEmail: user?.email,
     };
-    // console.log(findM);
+
     if (!findM) {
       const res = await axiosPublic.post("/add-to-cart", addCart);
-      console.log(res.data);
       if (res.data.insertedId) {
         setLoading(false);
         setClicked(false);
-
         Swal.fire({
           title: "Thank You!",
           text: "Your product add to cart!",
@@ -96,7 +92,6 @@ const ProductsCard = ({ product }) => {
       const pervPr = findM.productPrice;
       const pr = productPrice;
       const totalPr = parseFloat(pervPr + pr);
-
       const pervQty = findM.productQuantity;
       const qty = 1;
       const totalQty = parseInt(pervQty + qty);
@@ -104,11 +99,9 @@ const ProductsCard = ({ product }) => {
       const re = await axiosPublic.patch(
         `/add-to-cart/${findM._id}?price=${totalPr}&&qty=${totalQty}`
       );
-      console.log(re.data);
       if (re.data.modifiedCount) {
         setLoading(false);
         setClicked(false);
-
         Swal.fire({
           title: "Thank You!",
           text: "Your product add to cart!",
@@ -117,61 +110,135 @@ const ProductsCard = ({ product }) => {
       }
       refetch();
     }
-    // console.log(findMyItem);
-
-    // console.log(addCart);
   };
 
-  // const handleAddToCart = async () => {
-
-  // };
+  const discountPercentage = offerPrice
+    ? Math.round(((productPrice - offerPrice) / productPrice) * 100)
+    : 0;
 
   return (
-    <div className="card bg-base-100 w-96 shadow-xl">
-      <figure className="relative">
-        <img className="w-full h-72" src={productImg} alt="Shoes" />
-        <p className="bg-gray-800 absolute text-white px-2 py-1 rounded-sm left-0 top-0">
-          {productAddingTime}
-        </p>
-        <p className="bg-gray-800 absolute text-white px-2 py-1 rounded-sm right-0 top-0">
-          {brandName}
-        </p>
-      </figure>
-      <div className="card-body">
-        <h2 className="text-2xl font-semibold">{productName}</h2>
-        <p>{productDescription.slice(0, 75)}...</p>
-        <div className="card-actions justify-between items-center">
-          <ReactStars value={productRating} edit={false} size={24}></ReactStars>
-          <div className="badge badge-outline">{productCategory}</div>
+    <motion.div
+      className="group relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      whileHover={{ y: -5 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Image Section */}
+      <div className="relative overflow-hidden">
+        <motion.img
+          src={productImg}
+          alt={productName}
+          className="w-full h-64 object-cover"
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.3 }}
+        />
+
+        {/* Overlay Badges */}
+        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
+          <div className="flex flex-col gap-2">
+            {discountPercentage > 0 && (
+              <span className="bg-gradient-to-r w-fit from-red-500 to-pink-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                -{discountPercentage}%
+              </span>
+            )}
+          </div>
+          <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+            {brandName}
+          </span>
         </div>
 
-        <div className="card-actions justify-between items-center">
-          <div>
-            {offerPrice && (
-              <h3 className="line-through text-gray-600">${productPrice}</h3>
-            )}
-            <h3 className="text-2xl font-semibold">
-              ${offerPrice ? offerPrice : productPrice}
-            </h3>
-          </div>
-          <button
-            onClick={()=>handelAddToCartBtn(_id)}
-            className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-full shadow-md hover:bg-green-700 transition-all font-semibold relative overflow-hidden"
+        {/* Hover Actions */}
+        <motion.div
+          className="absolute inset-0 bg-black/40 flex items-center justify-center gap-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <motion.button
+            className="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition-all"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <motion.span animate={controls}>
-              <ShoppingCart className="w-5 h-5" />
-            </motion.span>
-            <span
-              className={`${
-                clicked ? "opacity-0" : "opacity-100"
-              } transition-opacity duration-300`}
-            >
-              Add to Cart
-            </span>
-          </button>
-        </div>
+            <Heart className="w-5 h-5" />
+          </motion.button>
+          <motion.button
+            className="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition-all"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Eye className="w-5 h-5" />
+          </motion.button>
+        </motion.div>
       </div>
-    </div>
+
+      {/* Content Section */}
+      <div className="p-6">
+        {/* Category Badge */}
+        <div className="mb-3">
+          <span className="inline-block bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-300 px-3 py-1 rounded-full text-xs font-medium">
+            {productCategory}
+          </span>
+        </div>
+
+        {/* Product Name */}
+        <h3 className="text-xl font-bold text-white mb-2 line-clamp-2 group-hover:text-purple-300 transition-colors">
+          {productName}
+        </h3>
+
+        {/* Description */}
+        <p className="text-gray-300 text-sm mb-4 line-clamp-2">
+          {productDescription}
+        </p>
+
+        {/* Rating */}
+        <div className="flex items-center gap-2 mb-4">
+          <ReactStars
+            value={productRating}
+            edit={false}
+            size={18}
+            color2="#fbbf24"
+            color1="#374151"
+          />
+          <span className="text-gray-400 text-sm">({productRating})</span>
+        </div>
+
+        {/* Price Section */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            {offerPrice && (
+              <span className="text-gray-400 line-through text-sm">
+                ${productPrice}
+              </span>
+            )}
+            <span className="text-2xl font-bold text-white">
+              ${offerPrice || productPrice}
+            </span>
+          </div>
+        </div>
+
+        {/* Add to Cart Button */}
+        <motion.button
+          onClick={() => handelAddToCartBtn(_id)}
+          disabled={loading}
+          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-3 rounded-xl font-semibold transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <motion.span animate={controls}>
+            <ShoppingCart className="w-5 h-5" />
+          </motion.span>
+          <span className={`${clicked ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}>
+            {loading ? "Adding..." : "Add to Cart"}
+          </span>
+        </motion.button>
+      </div>
+
+      {/* Glow Effect */}
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+    </motion.div>
   );
 };
 
