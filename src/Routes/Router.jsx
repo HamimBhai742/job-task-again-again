@@ -50,14 +50,7 @@ const router = createBrowserRouter([
         path: "/login",
         element: <Login></Login>,
       },
-      {
-        path: "/add-product",
-        element: (
-          <ProtectedRoute>
-            <AddProduct></AddProduct>
-          </ProtectedRoute>
-        ),
-      },
+
     ],
   },
   {
@@ -66,7 +59,9 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
-        element: <LeaderBoard></LeaderBoard>,
+        element: <LeaderBoard>
+
+        </LeaderBoard>,
       },
       {
         path: "/dashboard/my-cart",
@@ -121,6 +116,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/help&support",
         element:<HelpSupport/>
+      },
+       {
+        path: "/dashboard/add-product",
+        element: (
+          <ProtectedRoute>
+            <AddProduct></AddProduct>
+          </ProtectedRoute>
+        ),
       },
     ],
   },
