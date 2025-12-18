@@ -17,7 +17,8 @@ const PaymentS1 = () => {
     const [shipping, setShipping] = useState('');
     const [focusedField, setFocusedField] = useState('');
     const [myCarts, refetch] = useMyCarts();
-    const subTotalPrice = myCarts.reduce((p, q) => p + q.productPrice, 0);
+    console.log(myCarts)
+    const subTotalPrice = myCarts.reduce((p, q) => Number(p) + Number(q.productPrice), 0);
     const [shippingCrarge, setShippingCharge] = useState(0.00);
     const [plcBtn, setPlcBtn] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -75,7 +76,7 @@ const PaymentS1 = () => {
             status: 'pending',
             stepEmail: user?.email
         });
-        
+
         const redrictUrl = res.data.paymentUrl;
         if (redrictUrl) {
             window.location.replace(redrictUrl);
@@ -134,7 +135,7 @@ const PaymentS1 = () => {
                                 <MdLocalShipping className="text-blue-400" />
                                 <span>Shipping Options</span>
                             </h2>
-                            
+
                             <div className="space-y-4" onChange={handelShippingBtn}>
                                 {shippingOptions.map((option, index) => (
                                     <motion.div

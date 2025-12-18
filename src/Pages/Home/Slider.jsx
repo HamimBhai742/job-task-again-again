@@ -10,7 +10,7 @@ import { HiSparkles } from "react-icons/hi";
 
 const Slider = () => {
   const [activeSlide, setActiveSlide] = useState(0);
-  
+
   const brands = [
     { name: "Apple", image: "/apple.jpg", description: "Innovation at its finest" },
     { name: "LG", image: "/LG.jpg", description: "Life's Good" },
@@ -49,7 +49,7 @@ const Slider = () => {
         <h2 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-yellow-100 to-orange-100 bg-clip-text text-transparent">
           Top Brands Of The World
         </h2>
-        
+
         {/* Subtitle */}
         <p className="text-white/70 text-lg max-w-2xl mx-auto">
           Discover products from the world's most trusted and innovative brands
@@ -90,7 +90,7 @@ const Slider = () => {
       >
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent"></div>
-        
+
         {/* Custom Navigation Buttons */}
         <div className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10">
           <motion.button
@@ -101,7 +101,7 @@ const Slider = () => {
             <FaChevronLeft className="text-lg" />
           </motion.button>
         </div>
-        
+
         <div className="absolute top-1/2 right-4 transform -translate-y-1/2 z-10">
           <motion.button
             whileHover={{ scale: 1.1, x: 2 }}
@@ -166,10 +166,10 @@ const Slider = () => {
                     alt={brand.name}
                     className="w-full h-full object-cover"
                   />
-                  
+
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
+
                   {/* Brand Name Overlay */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -202,7 +202,7 @@ const Slider = () => {
           .brand-slider .swiper-pagination {
             bottom: -50px !important;
           }
-          
+
           .brand-slider .custom-bullet {
             width: 12px !important;
             height: 12px !important;
@@ -211,7 +211,7 @@ const Slider = () => {
             transition: all 0.3s ease !important;
             margin: 0 6px !important;
           }
-          
+
           .brand-slider .custom-bullet.swiper-pagination-bullet-active {
             background: linear-gradient(45deg, #3B82F6, #8B5CF6) !important;
             transform: scale(1.2) !important;
