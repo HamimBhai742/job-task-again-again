@@ -1,70 +1,61 @@
-import {
-    createBrowserRouter,
-} from "react-router-dom";
-import Dashboard from "/home/hamim/hamim/job-task-again/src/Layout/Dashboard";
-import PayLaout from "/home/hamim/hamim/job-task-again/src/Layout/PayLaout";
-import Root from "/home/hamim/hamim/job-task-again/src/Layout/Root";
-import AddProduct from "/home/hamim/hamim/job-task-again/src/Pages/AddProduct/AddProduct";
-import LeaderBoard from "/home/hamim/hamim/job-task-again/src/Pages/DashBoard/LeaderBoard";
-import History from "/home/hamim/hamim/job-task-again/src/Pages/History/History";
-import Home from "/home/hamim/hamim/job-task-again/src/Pages/Home/Home";
-import ManageUser from "/home/hamim/hamim/job-task-again/src/Pages/ManageAll/ManageUser";
-import MyCart from "/home/hamim/hamim/job-task-again/src/Pages/MyCart/MyCart";
-import MyProducts from "/home/hamim/hamim/job-task-again/src/Pages/MyProducts/MyProducts";
-import PayCancel from "/home/hamim/hamim/job-task-again/src/Pages/Payment/PayCancel";
-import PayFail from "/home/hamim/hamim/job-task-again/src/Pages/Payment/PayFail";
-import PaymentS1 from "/home/hamim/hamim/job-task-again/src/Pages/Payment/PaymentS1";
-import PaySuccess from "/home/hamim/hamim/job-task-again/src/Pages/Payment/PaySuccess";
-import Products from "/home/hamim/hamim/job-task-again/src/Pages/Products/Products";
-import Login from "/home/hamim/hamim/job-task-again/src/Pages/SignIn/Login";
-import Register from "/home/hamim/hamim/job-task-again/src/Pages/SignUp/Register";
-import AdminRoute from "/home/hamim/hamim/job-task-again/src/PrivateRoute/AdminROute";
-import ProtectedRoute from "/home/hamim/hamim/job-task-again/src/PrivateRoute/ProtectedRoute";
-import SellerRoute from "/home/hamim/hamim/job-task-again/src/PrivateRoute/SellerRoute";
-import UserRoutes from "/home/hamim/hamim/job-task-again/src/PrivateRoute/UserRoutes";
-import UpdateMyPro from "../Pages/Update/UpdateMyPro";
-import HelpSupport from "../Pages/helpSupport/HelpSupport";
+import { createBrowserRouter } from 'react-router-dom';
+import Dashboard from '/home/hamim/hamim/job-task-again/src/Layout/Dashboard';
+import PayLaout from '/home/hamim/hamim/job-task-again/src/Layout/PayLaout';
+import Root from '/home/hamim/hamim/job-task-again/src/Layout/Root';
+import AddProduct from '/home/hamim/hamim/job-task-again/src/Pages/AddProduct/AddProduct';
+import LeaderBoard from '/home/hamim/hamim/job-task-again/src/Pages/DashBoard/LeaderBoard';
+import History from '/home/hamim/hamim/job-task-again/src/Pages/History/History';
+import Home from '/home/hamim/hamim/job-task-again/src/Pages/Home/Home';
+import ManageUser from '/home/hamim/hamim/job-task-again/src/Pages/ManageAll/ManageUser';
+import MyCart from '/home/hamim/hamim/job-task-again/src/Pages/MyCart/MyCart';
+import MyProducts from '/home/hamim/hamim/job-task-again/src/Pages/MyProducts/MyProducts';
+import PayCancel from '/home/hamim/hamim/job-task-again/src/Pages/Payment/PayCancel';
+import PayFail from '/home/hamim/hamim/job-task-again/src/Pages/Payment/PayFail';
+import PaymentS1 from '/home/hamim/hamim/job-task-again/src/Pages/Payment/PaymentS1';
+import PaySuccess from '/home/hamim/hamim/job-task-again/src/Pages/Payment/PaySuccess';
+import Products from '/home/hamim/hamim/job-task-again/src/Pages/Products/Products';
+import Login from '/home/hamim/hamim/job-task-again/src/Pages/SignIn/Login';
+import Register from '/home/hamim/hamim/job-task-again/src/Pages/SignUp/Register';
+import AdminRoute from '/home/hamim/hamim/job-task-again/src/PrivateRoute/AdminROute';
+import ProtectedRoute from '/home/hamim/hamim/job-task-again/src/PrivateRoute/ProtectedRoute';
+import SellerRoute from '/home/hamim/hamim/job-task-again/src/PrivateRoute/SellerRoute';
+import UserRoutes from '/home/hamim/hamim/job-task-again/src/PrivateRoute/UserRoutes';
+import UpdateMyPro from '../Pages/Update/UpdateMyPro';
+import HelpSupport from '../Pages/helpSupport/HelpSupport';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Root></Root>,
     children: [
       {
-        path: "/",
+        path: '/',
         element: <Home></Home>,
       },
       {
-        path: "/product",
-        element: (
-          <ProtectedRoute>
-            <Products></Products>
-          </ProtectedRoute>
-        ),
+        path: '/product',
+        element: <Products></Products>,
       },
       {
-        path: "/register",
+        path: '/register',
         element: <Register></Register>,
       },
       {
-        path: "/login",
+        path: '/login',
         element: <Login></Login>,
       },
-
     ],
   },
   {
-    path: "/dashboard",
+    path: '/dashboard',
     element: <Dashboard></Dashboard>,
     children: [
       {
-        path: "/dashboard",
-        element: <LeaderBoard>
-
-        </LeaderBoard>,
+        path: '/dashboard',
+        element: <LeaderBoard></LeaderBoard>,
       },
       {
-        path: "/dashboard/my-cart",
+        path: '/dashboard/my-cart',
         element: (
           <ProtectedRoute>
             <UserRoutes>
@@ -74,7 +65,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/history",
+        path: '/dashboard/history',
         element: (
           <ProtectedRoute>
             <UserRoutes>
@@ -84,7 +75,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/manage-all",
+        path: '/dashboard/manage-all',
         element: (
           <ProtectedRoute>
             <AdminRoute>
@@ -94,7 +85,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/my-products",
+        path: '/dashboard/my-products',
         element: (
           <ProtectedRoute>
             <SellerRoute>
@@ -104,7 +95,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/update-my-product/:id",
+        path: '/dashboard/update-my-product/:id',
         element: (
           <ProtectedRoute>
             <SellerRoute>
@@ -114,11 +105,11 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/help&support",
-        element:<HelpSupport/>
+        path: '/dashboard/help&support',
+        element: <HelpSupport />,
       },
-       {
-        path: "/dashboard/add-product",
+      {
+        path: '/dashboard/add-product',
         element: (
           <ProtectedRoute>
             <AddProduct></AddProduct>
@@ -128,23 +119,23 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/payment",
+    path: '/payment',
     element: <PayLaout></PayLaout>,
     children: [
       {
-        path: "/payment/shopping",
+        path: '/payment/shopping',
         element: <PaymentS1></PaymentS1>,
       },
       {
-        path: "/payment/success",
+        path: '/payment/success',
         element: <PaySuccess></PaySuccess>,
       },
       {
-        path: "/payment/fail",
+        path: '/payment/fail',
         element: <PayFail></PayFail>,
       },
       {
-        path: "/payment/cancel",
+        path: '/payment/cancel',
         element: <PayCancel></PayCancel>,
       },
     ],

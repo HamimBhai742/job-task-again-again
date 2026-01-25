@@ -145,16 +145,16 @@ const Register = () => {
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-pink-400/20 to-red-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div className="absolute top-1/3 left-1/3 w-96 h-80 bg-gradient-to-r from-purple-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
       {/* Floating Particles */}
       <motion.div
-        animate={{ 
+        animate={{
           y: [0, -30, 0],
           rotate: [0, 360]
         }}
-        transition={{ 
+        transition={{
           duration: 20,
           repeat: Infinity,
           ease: "linear"
@@ -162,11 +162,11 @@ const Register = () => {
         className="absolute top-20 left-20 w-3 h-3 bg-yellow-400/60 rounded-full"
       />
       <motion.div
-        animate={{ 
+        animate={{
           y: [0, 40, 0],
           x: [0, 30, 0]
         }}
-        transition={{ 
+        transition={{
           duration: 18,
           repeat: Infinity,
           ease: "easeInOut"
@@ -174,11 +174,11 @@ const Register = () => {
         className="absolute top-32 right-32 w-4 h-4 bg-pink-400/60 rotate-45"
       />
       <motion.div
-        animate={{ 
+        animate={{
           scale: [1, 1.5, 1],
           rotate: [0, -360]
         }}
-        transition={{ 
+        transition={{
           duration: 22,
           repeat: Infinity,
           ease: "linear"
@@ -193,11 +193,11 @@ const Register = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative z-10 w-full max-w-lg mx-4"
       >
-        <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl p-8 relative overflow-hidden">
+        <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl p-8 relative overflow-hidden my-20">
           {/* Card Background Pattern */}
           <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-white/10 to-transparent rounded-full -translate-y-20 translate-x-20"></div>
-          
+
           <div className="relative z-10">
             {/* Logo & Welcome Section */}
             <motion.div
@@ -243,35 +243,35 @@ const Register = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className={`relative flex flex-col items-center p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${
-                      role 
-                        ? 'border-blue-400 bg-blue-400/20 text-white' 
+                      role
+                        ? 'border-blue-400 bg-blue-400/20 text-white'
                         : 'border-white/30 bg-white/10 text-white/70 hover:border-white/50'
                     }`}
                   >
-                    <input 
-                      type="radio" 
-                      name="v" 
-                      value="Customer" 
+                    <input
+                      type="radio"
+                      name="v"
+                      value="Customer"
                       className="sr-only"
                       required
                     />
                     <FaUser className="text-2xl mb-2" />
                     <span className="font-medium">Customer</span>
                   </motion.label>
-                  
+
                   <motion.label
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className={`relative flex flex-col items-center p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${
-                      !role 
-                        ? 'border-purple-400 bg-purple-400/20 text-white' 
+                      !role
+                        ? 'border-purple-400 bg-purple-400/20 text-white'
                         : 'border-white/30 bg-white/10 text-white/70 hover:border-white/50'
                     }`}
                   >
-                    <input 
-                      type="radio" 
-                      name="v" 
-                      value="Seller" 
+                    <input
+                      type="radio"
+                      name="v"
+                      value="Seller"
                       className="sr-only"
                       required
                     />
@@ -508,8 +508,8 @@ const Register = () => {
                 disabled={!role}
                 type="button"
                 className={`w-full py-4 border border-white/20 text-white font-medium rounded-2xl backdrop-blur-sm transition-all duration-300 flex items-center justify-center space-x-3 group ${
-                  role 
-                    ? 'bg-white/10 hover:bg-white/20' 
+                  role
+                    ? 'bg-white/10 hover:bg-white/20'
                     : 'bg-white/5 text-white/50 cursor-not-allowed'
                 }`}
               >
@@ -530,7 +530,7 @@ const Register = () => {
             >
               <p className="text-white/70 text-sm">
                 Already have an account?{' '}
-                <Link 
+                <Link
                   to="/login"
                   className="text-blue-400 hover:text-blue-300 font-semibold hover:underline transition-colors duration-300"
                 >
