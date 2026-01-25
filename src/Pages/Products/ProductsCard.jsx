@@ -47,9 +47,7 @@ const ProductsCard = ({ product }) => {
       x: [0, 20, -10, 0],
       transition: { duration: 0.6, ease: 'easeInOut' },
     });
-
-    console.log(user);
-    if (user === null) {
+    if (!user) {
       setLoading(false);
       setClicked(false);
       toast.error('You have to login first to add a product to cart');
